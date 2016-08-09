@@ -1,0 +1,74 @@
+html,
+body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  fontSize: 1em;
+  lineHeight: 1;
+}
+
+h1 {
+  font-size: 30vw;
+  color: white;
+  margin: 0;
+}
+
+nav {
+  position: absolute;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: row wrap;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 0.5em;
+}
+
+section {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+button {
+  color: rgba(0, 0, 0, 0.25);
+  padding: 0.25em 0.75em;
+  margin: 0.25em;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 9999px;
+  outline: none;
+  border: none;
+}
+
+button.active {
+  color: rgba(0, 0, 0, 0.75);
+  background: rgba(0, 0, 0, 0.25);
+}
