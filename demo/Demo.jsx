@@ -84,7 +84,7 @@ export default class Demo extends Component {
               <button
                 key={index}
                 className={item.active ? 'active' : 'inactive'}
-                onClick={this.ScrollTo.bind(this, item.scrollPosition)}
+                onClick={this.ScrollTo.bind(this, item.startPosition)}
                >
                 {item.name}: {round(item.scrolling)}
               </button>

@@ -1,6 +1,8 @@
 # react-scroll
 Reactive Scrolling
 
+[![Build Status](https://travis-ci.org/monteirocode/react-scroll.svg?branch=master)](https://travis-ci.org/monteirocode/react-scroll)
+
 ## Install
 
 `npm install monteirocode/react-scroll --save`
@@ -45,7 +47,7 @@ class Demo extends Component {
               <button
                 key={index}
                 className={item.active ? 'active' : 'inactive'}
-                onClick={this.ScrollTo.bind(this, item.scrollPosition)}
+                onClick={this.ScrollTo.bind(this, item.startPosition)}
                >
                 {item.name}
               </button>
@@ -146,21 +148,33 @@ Determines the minimum distance to set a item to `active: true`. e.g. `0.5` need
 [
   {
     "name": "Home",
-    "scrollPosition": 0,
+    "startPosition": 0,
+    "endPosition": 468,
     "scrolling": 0,
-    "active": true
+    "remainer": 0,
+    "active": true,
+    "framed": true,
+    "viewed": false
   },
   {
     "name": "About",
-    "scrollPosition": 468,
+    "startPosition": 468,
+    "endPosition": 936,
     "scrolling": 1,
-    "active": false
+    "remainer": 1,
+    "active": false,
+    "framed": false,
+    "viewed": false
   },
   {
     "name": "Contact",
-    "scrollPosition": 936,
+    "startPosition": 936,
+    "endPosition": 1404,
     "scrolling": 2,
-    "active": false
+    "remainer": 1,
+    "active": false,
+    "framed": false,
+    "viewed": false
   }
 ]
 ```

@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 
-// import { round } from './utilities'
+import { round } from './utilities'
 
 export default class Scroll extends Component {
   static propTypes = {
+    children: PropTypes.arrayOf(PropTypes.node),
     theshold: PropTypes.number,
     onScroll: PropTypes.func,
     scrollTo: PropTypes.number
@@ -62,30 +63,32 @@ export default class Scroll extends Component {
 
   generateItems({ children, scrollTop }) {
     let items = []
-    let scrollPosition = 0
+    let startPosition = 0
 
     for (let i = 0; i < children.length; i++) {
       let { offsetHeight, attributes } = children[i]
       let { theshold } = this.props
 
-      let startPoint = scrollPosition
-      let endPoint = scrollPosition + offsetHeight
-      let scrollingPoint = scrollPosition - scrollTop
+      let endPosition = startPosition + offsetHeight
+      let scrollingPoint = startPosition - scrollTop
 
       let scrolling = scrollingPoint / offsetHeight
-      // let innerScrolling = scrolling > 1 ? 1 : scrolling < -1 ? -1 : scrolling
+
+      let remainer = scrolling <= -1 ? 1 : scrolling >= 1 ? 1 : Math.abs(scrolling % 1)
 
       items.push({
         name: attributes.name ? attributes.name.value : null,
-        scrollPosition,
+        startPosition,
+        endPosition,
         scrolling,
-        active: scrolling >= -theshold && scrolling <= theshold,
+        remainer,
+        active: scrolling <= theshold && scrolling >= -theshold,
         framed: scrolling === 0,
-        viewed: scrollTop > endPoint,
+        viewed: scrollTop > endPosition,
       })
 
       // increament based on stacked item's height
-      scrollPosition += offsetHeight
+      startPosition += offsetHeight
     }
 
     return items
@@ -100,10 +103,11 @@ export default class Scroll extends Component {
 
     return (
       <div
-        {...this.props}
         style={style}
         onScroll={this.handleScroll.bind(this)}
-      />
+      >
+        {this.props.children}
+      </div>
     )
   }
 }
