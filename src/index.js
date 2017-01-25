@@ -1,11 +1,6 @@
-import Scroll from './Scroll'
-import initialScrollState from './initialScrollState'
-import * as util from './utilities'
-
-export {
-  Scroll,
-  initialScrollState,
-  util
-}
-
-export default Scroll
+export Scroller from './Scroller'
+export ScrollLink from './ScrollLink'
+export ScrollProvider from './ScrollProvider'
+export scrollConnect from './scrollConnect'
+export * as utilities from './utilities'
+export default exports

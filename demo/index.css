@@ -10,11 +10,11 @@ body {
   height: 100%;
   font: 1em Helvetica, sans-serif;
   lineHeight: 1;
+  color: white;
 }
 
 h1 {
-  font-size: 30vw;
-  color: white;
+  font-size: 20vw;
   margin: 0;
 }
 
@@ -42,6 +42,24 @@ nav {
   padding: 0.5em;
 }
 
+ul {
+  /*font-size: 1vw;*/
+  margin: 0;
+  left: 0;
+  padding-left: 1vw;
+  list-style: none;
+}
+
+span {
+  opacity: 0.3;
+}
+span.inactive {
+  opacity: 0.5;
+}
+span.active {
+  opacity: 1;
+}
+
 section {
   display: -webkit-box;
   display: -webkit-flex;
@@ -50,9 +68,9 @@ section {
   height: 100%;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
   -webkit-box-align: center;
   -webkit-align-items: center;
       -ms-flex-align: center;
@@ -63,7 +81,7 @@ section {
           justify-content: center;
 }
 
-button {
+a, button {
   font-size: 1em;
   color: rgba(0, 0, 0, 0.25);
   padding: 0.25em 0.75em;
@@ -74,7 +92,7 @@ button {
   border: none;
 }
 
-button.active {
+a.active, button.active {
   color: rgba(0, 0, 0, 0.75);
   background: rgba(0, 0, 0, 0.25);
 }

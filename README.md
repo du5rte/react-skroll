@@ -1,180 +1,170 @@
 # react-scroll
 Reactive Scrolling
 
-[![Build Status](https://travis-ci.org/monteirocode/react-scroll.svg?branch=master)](https://travis-ci.org/monteirocode/react-scroll)
+[![Build Status](https://travis-ci.org/du5rte/react-skroll.svg?branch=master)](https://travis-ci.org/du5rte/react-skroll)
+[![David](https://img.shields.io/david/peer/du5rte/react-skroll.svg)](https://github.com/du5rte/react-skroll)
+[![npm version](https://img.shields.io/npm/v/react-skroll.svg)](https://www.npmjs.com/package/react-skroll)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](CONTRIBUTING.md#pull-requests)
 
 ## Install
+```
+npm install react-skroll --save
+```
 
-`npm install monteirocode/react-scroll --save`
+## UMD
+```
+<script src="https://unpkg.com/react-skroll/dist/react-skroll.js"></scrip>
+```
+(Module exposed as `ReactSkroll`)
+
+ReactSkroll
+
+## Example Usage
+
+
+```javascript
+import { Scroll, ScrollProvider } from 'react-scroll'
 
 
 ## Codepen Demo
+[Live Demo](http://codepen.io/du5rte/pen/KrGjEm)
 
-[Live Demo](http://codepen.io/monteirocode/pen/KrGjEm)
 
-
-## Example Usage w/ state
+## Example Usage
 
 ```javascript
-import { Scroll, initialScrollState } from 'react-scroll'
+import { Scroll, ScrollProvider } from 'react-scroll'
 
 class Demo extends Component {
-  constructor() {
-    super()
-
-    this.state = {
-      scroll: initialScrollState,
-      scrollTo: 0
-    }
-  }
-
-  handleScroll(scroll) {
-    this.setState({ scroll })
-  }
-
-  ScrollTo(position) {
-    this.setState({scrollTo: position})
-  }
-
   render() {
     return (
       <div style={{height: '100%'}}>
         <nav>
-          {
-            // scroll.items: used to generate a navigator
-            this.state.scroll.items.length &&
-            this.state.scroll.items.map((item, index) =>
-              <button
-                key={index}
-                className={item.active ? 'active' : 'inactive'}
-                onClick={this.ScrollTo.bind(this, item.startPosition)}
-               >
-                {item.name}
-              </button>
-            )
-          }
+        {
+          this.props.scroll.children.map((child, index) =>
+            <ScrollLink key={index} index={index} to={child.name}>
+              {child.name}
+            </ScrollLink>
+          )
+        }
         </nav>
 
-        <Scroll
-          onScroll={this.handleScroll.bind(this)}
-          scrollTo={this.state.scrollTo}
-        >
+        <Scroll>
           {/* name: optional, used to generate the navigator */}
           <section name="Home">
             ...
+            <ScrollLink to="About" />
           </section>
           <section name="About">
             ...
+            <ScrollLink to="Contact" />
           </section>
           <section name="Contact">
             ...
+            <ScrollLink to="Home" />
           </section>
         </Scroll>
       </div>
     )
   }
 }
+
+ReactDOM.render(
+  <ScrollProvider>
+    <Demo />
+  </ScrollProvider>,
+  document.getElementById('app')
+)
 ```
 
-## Extra Example Usages
-
-```javascript
-scrollToTop(e) {
-  this.setState({scrollTo: 0})
-}
-
-scrollToBottom(e) {
-  this.setState({scrollTo: this.state.scroll.scrollLimit})
-}
+ReactDOM.render(
+  <ScrollProvider>
+    <Demo />
+  </ScrollProvider>,
+  document.getElementById('app')
+)
 ```
 
-## Example Usage w/ Motion
 
-compatible with `react-motion`
+>>>>>>> 1fb0d0c... whole new version with high order components
+## Compatible with Redux
+
 ```javascript
-<Motion
-  style={{
-    scroll: spring(this.state.scrollTo)
-  }}
->
-{({ scroll }) =>
-  <Scroll
-    onScroll={this.handleScroll.bind(this)}
-    scrollTo={scroll}
-  >
-    <section name="Home">
-      ...
-    </section>
-    <section name="About">
-      ...
-    </section>
-    <section name="Contact">
-      ...
-    </section>
-  </Scroll>
+
+@connect(browserMapStateToProps)
+@scrollConnect // add after react-redux connect
+export class NavLink extends Component {
+
+  scrollOpacity(remainer) {
+    return 1 - remainer + 0.15
+  }
+
+  render() {
+    const style = () => {
+      const child = this.props.scroll.children[this.props.index]
+
+      if (child) {
+        return {
+          opacity: 1 - child.locationFloatRemainer + 0.2
+        }
+      } else {
+        return {}
+      }
+    }
+
+    return (
+      <ScrollLink {...this.props} style={style} />
+    )
+  }
 }
-</Motion>
+
+ReactDOM.render(
+    <Provider store={store}>
+      <ScrollProvider>
+        <App />
+      </ScrollProvider>
+    </Provider>
+,
+  document.getElementById('app')
+)
 ```
 
 ## Props
+Check out source code:
+- [ScrollProvider.jsx](https://github.com/du5rte/react-skroll/blob/master/src/ScrollProvider.jsx#L142)
+- [contextProviderShape.js](https://github.com/du5rte/react-skroll/blob/master/src/contextProviderShape.js)
+- [nodeToScrollState.js](https://github.com/du5rte/react-skroll/blob/master/src/nodeToScrollState.js#L18)
+- [nodeChildrenToScrollState.js](https://github.com/du5rte/react-skroll/blob/master/src/nodeChildrenToScrollState.js#L37)
 
-#### `onScroll`: PropTypes.func
-Returns a callback
 
-```javascript
-{
-  "scrollTop": 0,
-  "scrollHeight": 1872,
-  "scrollLimit": 1404,
-  "scrolling": 0,
-  "start": true,
-  "inbetween": false,
-  "finish": false,
-  "items": [ ... ]
-}
-```
+Types:
+- location: `number`
+- locationFloat: `number`
+- nextLocation: `number`
+- end: `number`
+- viewHeight: `number`
+- scrollHeight: `number`
+- moving: `boolean`
+- resting: `boolean`
+- onStart: `boolean`
+- onMiddle: `boolean`
+- onEnd: `boolean`
+- children: `[]`
+- node: `boolean`
+- setNode(`node`)
+- unsetNode()
+- handleScroll(`event` optinal)
+- handleWheel(`event` optinal)
+- scrollTo(`position` || `name` || `DOMNode`)
+- scrollToPosition(`position`)
+- scrollToTop()
+- scrollToBottom()
+- scrollToName(`name`)
+- findChildByName(`name`)
+- scrollToElement(`DOMNode`)
+- handleMoving()
+- handleRest()
 
-#### `scrollTo`: PropTypes.number
-Sets `scrollTop` to passed value
-
-```javascript
-this.node.scrollTop = scrollTo
-```
-
-#### `theshold`: PropTypes.number
-Determines the minimum distance to set a item to `active: true`. e.g. `0.5` needs to be `50%` in view, `0` needs to be `100%` in view.
-
-```javascript
-[
-  {
-    "name": "Home",
-    "startPosition": 0,
-    "endPosition": 468,
-    "scrolling": 0,
-    "remainer": 0,
-    "active": true,
-    "framed": true,
-    "viewed": false
-  },
-  {
-    "name": "About",
-    "startPosition": 468,
-    "endPosition": 936,
-    "scrolling": 1,
-    "remainer": 1,
-    "active": false,
-    "framed": false,
-    "viewed": false
-  },
-  {
-    "name": "Contact",
-    "startPosition": 936,
-    "endPosition": 1404,
-    "scrolling": 2,
-    "remainer": 1,
-    "active": false,
-    "framed": false,
-    "viewed": false
-  }
-]
-```
+## TODO
+- [ ] Document
+- [ ] Test

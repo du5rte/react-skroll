@@ -1,116 +1,78 @@
 import React, { Component } from 'react'
-import { Motion, spring, presets } from 'react-motion'
 
-import { Scroll, initialScrollState, util } from '../src'
+import { ScrollProvider, Scroller, ScrollLink, utilities } from '../src'
 
-var { round } = util
+function round(val) {
+  var precision = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
+
+  return Math.round(val * precision) / precision;
+}
 
 export default class Demo extends Component {
-  constructor() {
-    super()
-
-    this.state = {
-      scroll: initialScrollState,
-      scrollTo: 0
-    }
-  }
-
-  handleScroll(scroll) {
-    this.setState({ scroll })
-  }
-
-  scrollToTop(e) {
-    this.setState({scrollTo: 0})
-  }
-
-  scrollToInbetween() {
-    let { scrollLimit } = this.state.scroll
-
-    let randomScroll = Math.floor(Math.random() * scrollLimit) + 1
-
-    this.setState({scrollTo: randomScroll})
-  }
-
-  scrollToBottom(e) {
-    this.setState({scrollTo: this.state.scroll.scrollLimit})
-  }
-
-
-  ScrollTo(position) {
-    this.setState({scrollTo: position})
-  }
-
   render() {
-    console.log(this.state.scroll)
-
-    if (this.state.scroll.items.length) {
-      this.state.scroll.items.map((item) => {
-        console.log(item)
-      })
+    const style = {
+      wrapper: {
+        position: 'fixed',
+        height: '100%',
+        width: '100%'
+      }
     }
 
-    let wrapper = {
-      height: '100%',
-    }
-
-    let colors = [
-      {name: "Green", color: "#8BC34A" },
-      {name: "Blue", color: "#2196F3" },
-      {name: "Purple", color: "#673AB7" },
-      {name: "Pink", color: "#E91E63" },
+    const colors = [
+      {name: "Red", color: "#e91e4f" },
+      {name: "Green", color: "#4ac36c" },
+      {name: "Blue", color: "#215cf4" },
     ]
 
     return (
-      <div style={wrapper}>
+      <div style={style.wrapper}>
         <nav>
-          <button
-            className={this.state.scroll.start ? 'active' : 'inactive'}
-            onClick={this.scrollToTop.bind(this)}
+          <ScrollLink
+            className={this.props.scroll.onStart ? 'active' : 'inactive'}
+            to={this.props.scroll.start}
             children="start"
           />
-          <button
-            className={this.state.scroll.inbetween ? 'active' : 'inactive'}
-            onClick={this.scrollToInbetween.bind(this)}
-            children="inbetween"
+          <ScrollLink
+            className={this.props.scroll.onMiddle ? 'active' : 'inactive'}
+            to={Math.floor(Math.random() * this.props.scroll.end) + 1}
+            children="middle"
           />
-          <button
-            className={this.state.scroll.finish ? 'active' : 'inactive'}
-            onClick={this.scrollToBottom.bind(this)}
-            children="finish"
+          <ScrollLink
+            className={this.props.scroll.onEnd ? 'active' : 'inactive'}
+            to={this.props.scroll.end}
+            children="end"
           />
           {
-            this.state.scroll.items.length &&
-            this.state.scroll.items.map((item, index) =>
-              <button
+            this.props.scroll.children.map((child, index) =>
+              <ScrollLink
                 key={index}
-                className={item.active ? 'active' : 'inactive'}
-                onClick={this.ScrollTo.bind(this, item.startPosition)}
+                className={child.active ? 'active' : 'inactive'}
+                to={child.start}
                >
-                {item.name}: {round(item.scrolling)}
-              </button>
+                {child.name}: {round(child.locationFloat)}
+              </ScrollLink>
             )
           }
+          {}
         </nav>
-        <Motion
-          style={{
-            scroll: spring(this.state.scrollTo)
-          }}
-        >
-        {({ scroll }) =>
-          <Scroll
-            onScroll={this.handleScroll.bind(this)}
-            scrollTo={scroll}
-          >
-            {
-              colors.map(({ name, color }) =>
-                <section name={name} style={{background: color}}>
-                  <h1>{round(this.state.scroll.scrolling)}</h1>
-                </section>
-              )
-            }
-          </Scroll>
-        }
-        </Motion>
+        <Scroller>
+          {
+            colors.map(({ name, color }, index) =>
+              <section key={index} name={name} style={{background: color}}>
+                <h1>{round(this.props.scroll.locationFloat)}</h1>
+                <ul>
+                  {Object.entries(this.props.scroll)
+                    .filter(([key, value]) => typeof value !== 'function')
+                    .filter(([key, value]) => typeof value !== 'object')
+                    .map(([key, value]) =>
+                    <li key={key}><span className="key">{key}:</span> <span key={key} className={value ? 'active' : 'inactive'}>{value.toString()}</span></li>
+                  )}
+                  <li>...</li>
+                </ul>
+              </section>
+            )
+          }
+        </Scroller>
       </div>
     )
   }

@@ -1,16 +1,17 @@
 import assert from 'assert'
 
-import Scroll, { initialScrollState, util } from '../src'
+import ReactSkroll, { Scroller, ScrollLink, ScrollProvider, } from '../src'
 
 describe('Libary', () => {
   describe('modules', () => {
     it('should export default module', () => {
-      assert.ok(Scroll)
+      assert.ok(ReactSkroll)
     })
 
     it('should export modules', () => {
-      assert.ok(initialScrollState)
-      assert.ok(util)
+      assert.ok(ScrollProvider)
+      assert.ok(Scroller)
+      assert.ok(ScrollLink)
     })
   })
 })

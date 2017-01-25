@@ -5,7 +5,7 @@ var env = process.env.NODE_ENV
 
 var config = {
   output: {
-    library: 'Scroll',
+    library: 'ReactSkroll',
     libraryTarget: 'umd',
   },
   module: {
@@ -37,7 +37,7 @@ if (process.env.NODE_ENV === 'production') {
           warnings: false
         },
         mangle: {
-          except: ['React', 'ReactDOM', 'Scroll', 'createResizeDetector']
+          except: ['React', 'ReactDOM', 'ReactSkroll', 'createResizeDetector']
         }
       })
     )
