@@ -1,8 +1,12 @@
 {
   "name": "react-skroll",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Reactive Scrolling",
   "main": "lib/index.js",
+  "files": [
+    "dist",
+    "lib"
+  ],
   "scripts": {
     "clean": "rm -rf dist lib && mkdir dist lib",
     "prebuild": "npm run clean",
