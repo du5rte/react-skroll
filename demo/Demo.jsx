@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 
-import { ScrollProvider, Scroller, ScrollLink, utilities } from '../src'
+import { ScrollProvider, Scroller, ScrollLink } from '../src'
 
 function round(val) {
   var precision = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
 
-  return Math.round(val * precision) / precision;
+  return Math.floor(val * precision) / precision;
 }
 
 export default class Demo extends Component {
@@ -22,6 +22,9 @@ export default class Demo extends Component {
       {name: "Red", color: "#e91e4f" },
       {name: "Green", color: "#4ac36c" },
       {name: "Blue", color: "#215cf4" },
+        {name: "Yellow", color: "#d9e91e" },
+        {name: "Cyan", color: "#4ac3c3" },
+        {name: "Purple", color: "#8421f4" },
     ]
 
     return (
@@ -53,9 +56,10 @@ export default class Demo extends Component {
               </ScrollLink>
             )
           }
-          {}
         </nav>
-        <Scroller>
+        <Scroller
+          scrollable={true}
+        >
           {
             colors.map(({ name, color }, index) =>
               <section key={index} name={name} style={{background: color}}>

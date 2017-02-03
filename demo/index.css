@@ -19,6 +19,7 @@ h1 {
 }
 
 nav {
+  font-size: 1.5vw;
   position: absolute;
   display: -webkit-box;
   display: -webkit-flex;
@@ -43,7 +44,7 @@ nav {
 }
 
 ul {
-  /*font-size: 1vw;*/
+  font-size: 2vw;
   margin: 0;
   left: 0;
   padding-left: 1vw;

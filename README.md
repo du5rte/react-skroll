@@ -1,10 +1,10 @@
-# react-scroll
-Reactive Scrolling
+# react-skroll
+Uses `react-motion` for butter smooth enhanced scrolling experience
 
 [![Build Status](https://travis-ci.org/du5rte/react-skroll.svg?branch=master)](https://travis-ci.org/du5rte/react-skroll)
 [![David](https://img.shields.io/david/peer/du5rte/react-skroll.svg)](https://github.com/du5rte/react-skroll)
-[![npm version](https://img.shields.io/npm/v/react-skroll.svg)](https://www.npmjs.com/package/react-skroll)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](CONTRIBUTING.md#pull-requests)
+[![PRs Welcome](https://img.shields.io/badge/stability-experimental-red.svg)](CONTRIBUTING.md#pull-requests)
 
 ## Install
 ```
@@ -19,13 +19,6 @@ npm install react-skroll --save
 
 ReactSkroll
 
-## Example Usage
-
-
-```javascript
-import { Scroll, ScrollProvider } from 'react-scroll'
-
-
 ## Codepen Demo
 [Live Demo](http://codepen.io/du5rte/pen/KrGjEm)
 
@@ -33,7 +26,7 @@ import { Scroll, ScrollProvider } from 'react-scroll'
 ## Example Usage
 
 ```javascript
-import { Scroll, ScrollProvider } from 'react-scroll'
+import { Scroll, ScrollProvider, ScrollLink } from 'react-skroll'
 
 class Demo extends Component {
   render() {
@@ -77,16 +70,7 @@ ReactDOM.render(
 )
 ```
 
-ReactDOM.render(
-  <ScrollProvider>
-    <Demo />
-  </ScrollProvider>,
-  document.getElementById('app')
-)
-```
 
-
->>>>>>> 1fb0d0c... whole new version with high order components
 ## Compatible with Redux
 
 ```javascript
@@ -123,8 +107,7 @@ ReactDOM.render(
       <ScrollProvider>
         <App />
       </ScrollProvider>
-    </Provider>
-,
+    </Provider>,
   document.getElementById('app')
 )
 ```

@@ -8,5 +8,5 @@ ReactDOM.render(
   <ScrollProvider>
     <Demo />
   </ScrollProvider>,
-  document.getElementById('app')
+  document.getElementById('render')
 )

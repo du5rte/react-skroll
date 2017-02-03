@@ -6,12 +6,6 @@ import ResizeObserver from 'resize-observer-polyfill'
 import { contextProviderShape } from './utilities'
 
 export default class Scroller extends Component {
-  constructor () {
-    super()
-
-    this.node = null
-  }
-
   static contextTypes = {
     scroll: contextProviderShape
   };
@@ -29,7 +23,7 @@ export default class Scroller extends Component {
     let node = ReactDOM.findDOMNode(this)
 
     // set node
-    this.node = node
+    // this.node = node
     this.context.scroll.setNode(node)
 
     // run on first render
@@ -41,6 +35,16 @@ export default class Scroller extends Component {
     })
 
     this.resizeObserver.observe(node)
+  }
+
+  componentWillReceiveProps(newProps) {
+    // let { scrollable } = newProps
+    //
+    // TODO: pass props to parent state (context)
+    // FIX: creats infinte loop
+    // this.context.scroll.setPropsToContext({
+    //   scrollable
+    // })
   }
 
   componentWillUnmount() {
@@ -58,6 +62,21 @@ export default class Scroller extends Component {
     this.context.scroll.handleWheel(e)
   }
 
+  handleTouchStart(e) {
+    if (this.props.handleTouchStart) this.props.handleTouchStart(e)
+    this.context.scroll.handleTouchStart(e)
+  }
+
+  handleTouchMove(e) {
+    if (this.props.handleTouchMove) this.props.handleTouchMove(e)
+    this.context.scroll.handleTouchMove(e)
+  }
+
+  handleTouchEnd(e) {
+    if (this.props.handleTouchEnd) this.props.handleTouchEnd(e)
+    this.context.scroll.handleTouchEnd(e)
+  }
+
   render() {
     const style = {
       height: '100%',
@@ -68,7 +87,7 @@ export default class Scroller extends Component {
       ...this.props.style
     }
 
-    const { location, nextLocation, handleRest } = this.context.scroll
+    const { node, location, nextLocation, setRest } = this.context.scroll
 
     // Fixes unknown props on <div> tag
     const { scrollable, ...props } = this.props
@@ -78,11 +97,11 @@ export default class Scroller extends Component {
         style={{
           next: nextLocation !== null ? spring(nextLocation) : location
         }}
-        onRest={handleRest}
+        onRest={setRest}
       >
       {({ next }) => {
-        if (this.node && nextLocation !== null) {
-          this.node.scrollTop = next
+        if (node && nextLocation !== null) {
+          node.scrollTop = next
         }
 
         return (
@@ -91,6 +110,9 @@ export default class Scroller extends Component {
             style={style}
             onScroll={this.handleScroll.bind(this)}
             onWheel={this.handleWheel.bind(this)}
+            onTouchStart={this.handleTouchStart.bind(this)}
+            onTouchMove={this.handleTouchMove.bind(this)}
+            onTouchEnd={this.handleTouchEnd.bind(this)}
           />
         )
       }}

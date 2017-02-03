@@ -1,6 +1,6 @@
 {
   "name": "react-skroll",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Reactive Scrolling",
   "main": "lib/index.js",
   "files": [
@@ -14,7 +14,7 @@
     "build:umd": "NODE_ENV=production webpack src/index.js dist/react-skroll.js",
     "build:umd:min": "NODE_ENV=production TARGET=minify webpack src/index.js dist/react-skroll.min.js",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
-    "dev:build": "npm run build:lib -- --watch & npm run test -- --watch",
+    "build:dev": "npm run build:lib -- --watch & npm run test -- --watch",
     "dev": "webpack-dev-server demo/index.jsx --content-base demo/ --devtool eval --inline --hot --inline --progress --colors --no-info",
     "prepublish": "npm run clean && npm run build",
     "test": "NODE_ENV=production mocha --compilers js:babel-core/register"
@@ -39,19 +39,20 @@
   },
   "homepage": "https://github.com/du5rte/react-skroll#readme",
   "dependencies": {
-    "react-motion": "^0.4.7",
     "resize-observer-polyfill": "^1.3.2",
     "throttle-debounce": "^1.0.1"
   },
   "peerDependencies": {
     "react": ">=0.14.0",
-    "react-dom": ">=0.14.0"
+    "react-dom": ">=0.14.0",
+    "react-motion": ">=0.4.0"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",
     "babel-core": "^6.22.1",
     "babel-loader": "^6.2.10",
     "babel-preset-es2015": "^6.22.0",
+    "babel-preset-es2017": "^6.22.0",
     "babel-preset-react": "^6.22.0",
     "babel-preset-react-hmre": "^1.1.1",
     "babel-preset-stage-0": "^6.22.0",
