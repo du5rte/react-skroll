@@ -8,48 +8,21 @@ import { contextProviderShape } from './utilities'
 export default class Scroller extends Component {
   static contextTypes = {
     scroll: contextProviderShape
-  };
+  }
 
   static propTypes = {
-    children: PropTypes.arrayOf(PropTypes.node),
-    scrollable: PropTypes.bool,
-  };
-
-  static defaultProps = {
-    scrollable: true,
-  };
+    children: PropTypes.arrayOf(PropTypes.element).isRequired,
+  }
 
   componentDidMount() {
     let node = ReactDOM.findDOMNode(this)
 
-    // set node
-    // this.node = node
+    // sets node in ScrollProdiver
     this.context.scroll.setNode(node)
-
-    // run on first render
-    // this.context.scroll.handleScroll()
-
-    // add component to resize observer to detect changes on resize
-    this.resizeObserver = new ResizeObserver((entries, observer) => {
-      this.context.scroll.handleScroll()
-    })
-
-    this.resizeObserver.observe(node)
-  }
-
-  componentWillReceiveProps(newProps) {
-    // let { scrollable } = newProps
-    //
-    // TODO: pass props to parent state (context)
-    // FIX: creats infinte loop
-    // this.context.scroll.setPropsToContext({
-    //   scrollable
-    // })
   }
 
   componentWillUnmount() {
     this.context.scroll.unsetNode()
-    this.resizeObserver.disconnect(this.context.scroll.node)
   }
 
   handleScroll(e) {
@@ -78,35 +51,39 @@ export default class Scroller extends Component {
   }
 
   render() {
+    const {
+      node,
+      position,
+      changedPosition,
+      touching,
+      autoScroll,
+    } = this.context.scroll
+
     const style = {
       height: '100%',
       width: '100%',
       overflowScrolling: 'touch',
       WebkitOverflowScrolling: 'touch',
-      overflowY: this.props.scrollable ? 'auto' : 'hidden',
+      // TODO: investigar glich on touchScroll with overFlow
+      // overflowY: !autoScroll && !touching ? 'auto' : 'hidden',
+      overflowY: autoScroll || touching ? 'hidden' : 'auto',
       ...this.props.style
     }
-
-    const { node, location, nextLocation, setRest } = this.context.scroll
-
-    // Fixes unknown props on <div> tag
-    const { scrollable, ...props } = this.props
 
     return (
       <Motion
         style={{
-          next: nextLocation !== null ? spring(nextLocation) : location
+          positionSpring: changedPosition !== null ? spring(changedPosition) : position
         }}
-        onRest={setRest}
       >
-      {({ next }) => {
-        if (node && nextLocation !== null) {
-          node.scrollTop = next
+      {({ positionSpring }) => {
+        if (node && changedPosition !== null) {
+          node.scrollTop = Math.round(positionSpring)
         }
 
         return (
           <div
-            {...props}
+            {...this.props}
             style={style}
             onScroll={this.handleScroll.bind(this)}
             onWheel={this.handleWheel.bind(this)}

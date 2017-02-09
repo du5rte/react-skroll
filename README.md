@@ -74,79 +74,104 @@ ReactDOM.render(
 ## Compatible with Redux
 
 ```javascript
-
-@connect(browserMapStateToProps)
+@connect(mapStateToProps)
 @scrollConnect // add after react-redux connect
-export class NavLink extends Component {
-
-  scrollOpacity(remainer) {
-    return 1 - remainer + 0.15
-  }
-
+export class Demo extends Component {
   render() {
-    const style = () => {
-      const child = this.props.scroll.children[this.props.index]
-
-      if (child) {
-        return {
-          opacity: 1 - child.locationFloatRemainer + 0.2
-        }
-      } else {
-        return {}
-      }
-    }
-
-    return (
-      <ScrollLink {...this.props} style={style} />
-    )
+    ...
   }
 }
 
 ReactDOM.render(
     <Provider store={store}>
       <ScrollProvider>
-        <App />
+        <Demo />
       </ScrollProvider>
     </Provider>,
   document.getElementById('app')
 )
 ```
 
-## Props
+## ScrollProvider
+
+### default
+Default scrolling with scrollTo and scroll stats features
+
+```js
+<ScrollProvider>
+  <Demo />
+</ScrollProvider>
+```
+![preview ](demo/default.gif)
+
+
+### autoFrame
+Default scrolling with scrolling reframe the view to the current item
+
+```js
+<ScrollProvider autoFrame={true}>
+  <Demo />
+</ScrollProvider>
+```
+![preview ](demo/autoFrame.gif)
+
+### autoScroll
+Prevents default scrolling and automatically scroll to next item
+
+```js
+<ScrollProvider autoScroll={true}>
+  <Demo />
+</ScrollProvider>
+```
+![preview ](demo/autoScroll.gif)
+
+### this.props.scroll
+
+Types:
+- position: `number`
+- positionRatio: `float`
+- start: `number`
+- end: `number`
+- viewHeight: `number`
+- scrollHeight: `number`
+- ready: `boolean`
+- onStart: `boolean`
+- onMiddle: `boolean`
+- onEnd: `boolean`
+- children: `[childScroll]`,
+- scrolling: `boolean`
+- wheeling: `boolean`
+- touching: `boolean`
+- moving: `boolean`
+- resting: `boolean`
+- scrollTo(`position: number` || `name: string` || `node: DOM Element`)
+- scrollToPosition(`position`)
+- scrollToByIndex(`number`)
+- scrollToName(`name`)
+- scrollToTop()
+- scrollToBottom()
+- scrollToElement()
+- scrollToActive()
+
+### this.props.scroll.children
+- name: `string`
+- position: `number`
+- positionRatio: `float`
+- positionRatioRemainer: `float`
+- start: `number`
+- end: `number`
+- viewHeight: `number`
+- onView: `boolean`
+- active: `boolean`
+- onFrame: `boolean`
+
+
+## More on props
 Check out source code:
 - [ScrollProvider.jsx](https://github.com/du5rte/react-skroll/blob/master/src/ScrollProvider.jsx#L142)
 - [contextProviderShape.js](https://github.com/du5rte/react-skroll/blob/master/src/contextProviderShape.js)
 - [nodeToScrollState.js](https://github.com/du5rte/react-skroll/blob/master/src/nodeToScrollState.js#L18)
 - [nodeChildrenToScrollState.js](https://github.com/du5rte/react-skroll/blob/master/src/nodeChildrenToScrollState.js#L37)
-
-
-Types:
-- location: `number`
-- locationFloat: `number`
-- nextLocation: `number`
-- end: `number`
-- viewHeight: `number`
-- scrollHeight: `number`
-- moving: `boolean`
-- resting: `boolean`
-- onStart: `boolean`
-- onMiddle: `boolean`
-- onEnd: `boolean`
-- children: `[]`
-- node: `boolean`
-- setNode(`node`)
-- unsetNode()
-- handleScroll(`event` optinal)
-- handleWheel(`event` optinal)
-- scrollTo(`position` || `name` || `DOMNode`)
-- scrollToPosition(`position`)
-- scrollToTop()
-- scrollToBottom()
-- scrollToName(`name`)
-- findChildByName(`name`)
-- scrollToElement(`DOMNode`)
-- handleMoving()
-- handleRest()
 
 ## TODO
 - [ ] Document

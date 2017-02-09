@@ -5,7 +5,7 @@ import { ScrollProvider, Scroller, ScrollLink } from '../src'
 function round(val) {
   var precision = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
 
-  return Math.floor(val * precision) / precision;
+  return Math.round(val * precision) / precision;
 }
 
 export default class Demo extends Component {
@@ -19,12 +19,12 @@ export default class Demo extends Component {
     }
 
     const colors = [
-      {name: "Red", color: "#e91e4f" },
-      {name: "Green", color: "#4ac36c" },
       {name: "Blue", color: "#215cf4" },
-        {name: "Yellow", color: "#d9e91e" },
-        {name: "Cyan", color: "#4ac3c3" },
-        {name: "Purple", color: "#8421f4" },
+      {name: "Cyan", color: "#0ccabf" },
+      {name: "Green", color: "#4ac36c" },
+      {name: "Yellow", color: "#e0be18" },
+      {name: "Red", color: "#e91e4f" },
+      {name: "Magenta", color: "#ca28e4" },
     ]
 
     return (
@@ -52,25 +52,25 @@ export default class Demo extends Component {
                 className={child.active ? 'active' : 'inactive'}
                 to={child.start}
                >
-                {child.name}: {round(child.locationFloat)}
+                {child.name}: {round(child.positionRatio)}
               </ScrollLink>
             )
           }
         </nav>
-        <Scroller
-          scrollable={true}
-        >
+        <Scroller>
           {
             colors.map(({ name, color }, index) =>
               <section key={index} name={name} style={{background: color}}>
-                <h1>{round(this.props.scroll.locationFloat)}</h1>
+                <h1>{round(this.props.scroll.positionRatio)}</h1>
                 <ul>
-                  {Object.entries(this.props.scroll)
-                    .filter(([key, value]) => typeof value !== 'function')
-                    .filter(([key, value]) => typeof value !== 'object')
-                    .map(([key, value]) =>
-                    <li key={key}><span className="key">{key}:</span> <span key={key} className={value ? 'active' : 'inactive'}>{value.toString()}</span></li>
-                  )}
+                  {
+                    Object.entries(this.props.scroll)
+                      .filter(([key, value]) => typeof value !== 'function')
+                      .filter(([key, value]) => typeof value !== 'object')
+                      .map(([key, value]) =>
+                      <li key={key}><span className="key">{key}:</span> <span key={key} className={value ? 'active' : 'inactive'}>{value.toString()}</span></li>
+                    )
+                  }
                   <li>...</li>
                 </ul>
               </section>
@@ -81,3 +81,8 @@ export default class Demo extends Component {
     )
   }
 }
+
+/*
+
+
+*/

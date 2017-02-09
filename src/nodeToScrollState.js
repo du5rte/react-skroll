@@ -4,16 +4,16 @@ export default function nodeToScrollState({ scrollTop, scrollHeight, offsetHeigh
   let viewHeight = offsetHeight
   let end = scrollHeight - viewHeight
 
-  // current location
-  let location = scrollTop
-  let locationFloat = scrollTop / end
+  // current position
+  let position = scrollTop
+  let positionRatio = scrollTop / end
 
   // Conditionals
-  let onStart = location <= start
-  let onEnd = location >= end
+  let onStart = position <= start
+  let onEnd = position >= end
   let onMiddle = !onStart && !onEnd
 
   // let scrolling = true / false
 
-  return { location, locationFloat, start, end, viewHeight, scrollHeight, onStart, onMiddle, onEnd }
+  return { position, positionRatio, start, end, viewHeight, scrollHeight, onStart, onMiddle, onEnd }
 }
