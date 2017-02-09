@@ -32,7 +32,7 @@ export default class ScrollProvider extends Component {
   }
 
   static defaultProps = {
-    autoFrame: true,
+    autoFrame: false,
     autoScroll: false,
   }
 
@@ -374,6 +374,9 @@ export default class ScrollProvider extends Component {
         scrollToBottom: this.scrollToBottom.bind(this),
         scrollToElement: this.scrollToElement.bind(this),
         scrollToActive: this.scrollToActive.bind(this),
+        findChildByName: this.findChildByName.bind(this),
+        findChildOnView: this.findChildOnView.bind(this),
+        findChildIndexOnView: this.findChildIndexOnView.bind(this),
       }
     }
   }
