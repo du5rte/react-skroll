@@ -10,7 +10,7 @@
   "scripts": {
     "clean": "rm -rf dist lib && mkdir dist lib",
     "prebuild": "npm run clean",
-    "build:lib": "babel src --out-dir lib",
+    "build:lib": "NODE_ENV=production babel src --out-dir lib",
     "build:umd": "NODE_ENV=production webpack src/index.js dist/react-skroll.js",
     "build:umd:min": "NODE_ENV=production TARGET=minify webpack src/index.js dist/react-skroll.min.js",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
