@@ -39,6 +39,8 @@
   },
   "homepage": "https://github.com/du5rte/react-skroll#readme",
   "dependencies": {
+    "prop-types": "^15.6.0",
+    "react-motion": "^0.5.2",
     "resize-observer-polyfill": "^1.3.2",
     "throttle-debounce": "^1.0.1"
   },

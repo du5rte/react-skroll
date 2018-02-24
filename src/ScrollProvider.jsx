@@ -1,4 +1,5 @@
-import React, { Component, PropTypes, Children } from 'react'
+import React, { Component, Children } from 'react'
+import PropTypes from 'prop-types';
 import { Motion, spring } from 'react-motion'
 import { throttle, debounce } from 'throttle-debounce'
 import ResizeObserver from 'resize-observer-polyfill'
