@@ -265,17 +265,14 @@ export default class ScrollProvider extends Component {
   }
 
   handleResizeStart() {
-    console.log('handleResizeStart')
     this.setStateMove()
   }
 
   handleResizeMove() {
-    console.log('handleResizeMove')
     this.handleScroll()
   }
 
   handleResizeEnd() {
-    console.log('handleResizeEnd')
     if (this.state.autoFrame) this.scrollToActive()
   }
 
