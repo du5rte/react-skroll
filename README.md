@@ -26,103 +26,45 @@ ReactSkroll
 ## Example Usage
 
 ```javascript
-import { Scroll, ScrollProvider, ScrollLink } from 'react-skroll'
+import { Scroller } from 'react-skroll'
 
-class Demo extends Component {
-  render() {
-    return (
-      <div style={{height: '100%'}}>
-        <nav>
-        {
-          this.props.scroll.children.map((child, index) =>
-            <ScrollLink key={index} index={index} to={child.name}>
-              {child.name}
-            </ScrollLink>
-          )
-        }
-        </nav>
-
-        <Scroll>
-          {/* name: optional, used to generate the navigator */}
-          <section name="Home">
-            ...
-            <ScrollLink to="About" />
-          </section>
-          <section name="About">
-            ...
-            <ScrollLink to="Contact" />
-          </section>
-          <section name="Contact">
-            ...
-            <ScrollLink to="Home" />
-          </section>
-        </Scroll>
-      </div>
-    )
-  }
-}
-
-ReactDOM.render(
-  <ScrollProvider>
-    <Demo />
-  </ScrollProvider>,
-  document.getElementById('app')
+const Demo = () => (
+  <Scroller
+    scrollRef={ref => this.scroll = ref}
+    autoScroll={true}
+    autoFrame={true}
+  >
+    <View>
+      <Button
+        title="1"
+        onPress={() => this.scroll.scrollToNext()}
+      />
+    </View>
+    <View>
+      <Button
+        title="2"
+        onPress={() => this.scroll.scrollToNext()}
+      />
+    </View>
+  </Scroller>
 )
 ```
 
-
-## Compatible with Redux
-
-```javascript
-@connect(mapStateToProps)
-@scrollConnect // add after react-redux connect
-export class Demo extends Component {
-  render() {
-    ...
-  }
-}
-
-ReactDOM.render(
-    <Provider store={store}>
-      <ScrollProvider>
-        <Demo />
-      </ScrollProvider>
-    </Provider>,
-  document.getElementById('app')
-)
-```
-
-## ScrollProvider
 
 ### default
 Default scrolling with scrollTo and scroll stats features
 
-```js
-<ScrollProvider>
-  <Demo />
-</ScrollProvider>
-```
 ![preview ](demo/default.gif)
 
 
 ### autoFrame
 Default scrolling with scrolling reframe the view to the current item
 
-```js
-<ScrollProvider autoFrame={true}>
-  <Demo />
-</ScrollProvider>
-```
 ![preview ](demo/autoFrame.gif)
 
 ### autoScroll
 Prevents default scrolling and automatically scroll to next item
 
-```js
-<ScrollProvider autoScroll={true}>
-  <Demo />
-</ScrollProvider>
-```
 ![preview ](demo/autoScroll.gif)
 
 ### this.props.scroll
@@ -147,7 +89,6 @@ Types:
 - scrollTo(`position: number` || `name: string` || `node: DOM Element`)
 - scrollToPosition(`position`)
 - scrollToByIndex(`number`)
-- scrollToName(`name`)
 - scrollToTop()
 - scrollToBottom()
 - scrollToElement()
@@ -168,7 +109,7 @@ Types:
 
 ## More on props
 Check out source code:
-- [ScrollProvider.jsx](https://github.com/du5rte/react-skroll/blob/master/src/ScrollProvider.jsx#L142)
+- [Scroller.js](https://github.com/du5rte/react-skroll/blob/master/src/Scroller.js)
 - [contextProviderShape.js](https://github.com/du5rte/react-skroll/blob/master/src/contextProviderShape.js)
 - [nodeToScrollState.js](https://github.com/du5rte/react-skroll/blob/master/src/nodeToScrollState.js#L18)
 - [nodeChildrenToScrollState.js](https://github.com/du5rte/react-skroll/blob/master/src/nodeChildrenToScrollState.js#L37)

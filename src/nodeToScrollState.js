@@ -1,4 +1,9 @@
-export default function nodeToScrollState({ scrollTop, scrollHeight, offsetHeight }) {
+export default function nodeToScrollState({
+  scrollTop,
+  scrollHeight,
+  offsetHeight,
+  children
+}) {
   // Interpreting native values
   let start = 0
   let viewHeight = offsetHeight
@@ -15,5 +20,19 @@ export default function nodeToScrollState({ scrollTop, scrollHeight, offsetHeigh
 
   // let scrolling = true / false
 
-  return { position, positionRatio, start, end, viewHeight, scrollHeight, onStart, onMiddle, onEnd }
+  let positionRelativeRatio = Math.abs(start - scrollTop / offsetHeight)
+
+  return {
+    position,
+    positionRatio,
+    // positionIndex,
+    positionRelativeRatio,
+    start,
+    end,
+    viewHeight,
+    scrollHeight,
+    onStart,
+    onMiddle,
+    onEnd
+  }
 }

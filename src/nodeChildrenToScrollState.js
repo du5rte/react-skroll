@@ -24,7 +24,6 @@ export default function nodeChildrenToScrollState({ children, scrollTop }) {
     /* Used for creating navigations and  to links to
     *  <Link to="Home" />
     */
-    let name = attributes.name ? attributes.name.value : null
 
     // Conditionals
     // FIX: use exact values
@@ -34,7 +33,7 @@ export default function nodeChildrenToScrollState({ children, scrollTop }) {
     // TODO: addfunction to run on activate()
     let active = onView
 
-    list.push({ name, position, positionRatio, positionRatioRemainer, start, end, viewHeight, onView, active, onFrame })
+    list.push({ position, positionRatio, positionRatioRemainer, start, end, viewHeight, onView, active, onFrame })
 
     // increament based on stacked item's height
     start += offsetHeight

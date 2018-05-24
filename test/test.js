@@ -9,9 +9,7 @@ describe('Libary', () => {
     })
 
     it('should export modules', () => {
-      assert.ok(ScrollProvider)
       assert.ok(Scroller)
-      assert.ok(ScrollLink)
     })
   })
 })
