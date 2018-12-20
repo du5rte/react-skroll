@@ -13,15 +13,13 @@ npm install react-skroll --save
 
 ## UMD
 ```
-<script src="https://unpkg.com/react-skroll/dist/react-skroll.js"></scrip>
+<script src="https://unpkg.com/react-sprin/web.umd.js"></script>
+<script src="https://unpkg.com/react-skroll/dist/react-skroll.js"></script>
 ```
 (Module exposed as `ReactSkroll`)
 
-ReactSkroll
-
-## Codepen Demo
-[Live Demo](http://codepen.io/du5rte/pen/KrGjEm)
-
+## Demo
+[Codepen Demo](http://codepen.io/du5rte/pen/KrGjEm)
 
 ## Usage
 
