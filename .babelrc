@@ -1,15 +1,10 @@
 {
   "presets": [
-    "react",
-    "es2015",
-    "stage-0"
+    "@babel/preset-env",
+    "@babel/preset-react"
   ],
   "plugins": [
-    "react-native-web"
-  ],
-  "env": {
-    "development": {
-      "presets": ["react-hmre"]
-    }
-  }
+    "@babel/plugin-proposal-export-default-from",
+    "@babel/plugin-proposal-class-properties"
+  ]
 }

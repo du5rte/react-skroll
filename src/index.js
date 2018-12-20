@@ -4,4 +4,4 @@ export nodeToScrollState from './nodeToScrollState'
 export nodeChildrenToScrollState from './nodeChildrenToScrollState'
 export contextProviderShape from './contextProviderShape'
 
-export default exports
+export default module.exports
