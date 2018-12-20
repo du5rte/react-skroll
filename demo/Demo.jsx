@@ -60,21 +60,32 @@ export default class Demo extends Component {
           {
             colors.map(({ name, color }, index) =>
               <section key={index} name={name} style={{background: color}}>
-                <h1>{round(scroll.positionRatio)}</h1>
-                <ul>
-                  {
-                    Object.entries(scroll)
-                      .filter(([key, value]) => typeof value !== 'function')
-                      .filter(([key, value]) => typeof value !== 'object')
-                      .map(([key, value]) =>
-                        <li key={key}>
-                          <span className="key">{key}: </span>
-                          <span key={key} className={value ? 'active' : 'inactive'}>{value.toString()}</span>
-                        </li>
-                    )
-                  }
-                  <li>...</li>
-                </ul>
+                <div className="flex center-center half-width">
+                  <h1>{round(scroll.positionRatio)}</h1>
+                </div>
+
+                <div className="flex left-center half-width">
+                  <ul>
+                    <p>{'{'}</p>
+
+                    {
+                      Object.entries(scroll)
+                        .filter(([key, value]) => typeof value !== 'function')
+                        .filter(([key, value]) => typeof value !== 'object')
+                        .map(([key, value]) =>
+                          <li key={key}>
+                            <span>{key}: </span>
+                            <span className={value ? 'active' : 'inactive'}>{value.toString()}</span>
+                          </li>
+                      )
+                    }
+
+                    <li>...</li>
+                    <p>{'}'}</p>
+                  </ul>
+                </div>
+
+
               </section>
             )
           }
