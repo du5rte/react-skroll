@@ -55,6 +55,8 @@ export default class Demo extends Component {
 
         <Scroller
           scrollRef={ref => this.scroll = ref}
+          autoScroll={true}
+          autoFrame={true}
           onScrollChange={(scroll) => this.setState({ scroll })}
         >
           {
