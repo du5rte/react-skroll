@@ -43,12 +43,19 @@ nav {
   padding: 0.5em;
 }
 
+h1 {
+  text-align: middle;
+}
+
 ul {
   font-size: 2vw;
   margin: 0;
   left: 0;
-  padding-left: 1vw;
   list-style: none;
+}
+
+li {
+  padding-left: 2vw;
 }
 
 span {
@@ -88,6 +95,25 @@ section {
   width: 100%;
 }
 
+.flex {
+  display: flex;
+  flex-direction: column;
+}
+
+.half-width {
+  width: 50%;
+}
+
+.center-center {
+  justify-content: center;
+  align-items: center;
+}
+
+.left-center {
+  justify-content: center;
+  align-items: flex-start;
+}
+
 a, button {
   font-size: 1em;
   color: rgba(0, 0, 0, 0.25);
@@ -98,6 +124,7 @@ a, button {
   outline: none;
   border: none;
   cursor: pointer;
+  user-select: none;
 }
 
 a.active, button.active {

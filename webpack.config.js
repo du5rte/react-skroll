@@ -1,5 +1,7 @@
 var path = require('path')
 var webpack = require('webpack')
+var UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 var env = process.env.NODE_ENV
 
@@ -11,17 +13,14 @@ var config = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(js)$/,
         exclude: /node_modules/,
         use: { loader: 'babel-loader' }
       },
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
-    alias: {
-      'react-native$': 'react-native-web'
-    }
+    extensions: ['.js']
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -33,6 +32,12 @@ var config = {
 if (process.env.NODE_ENV !== 'production') {
   config.mode = 'development'
   config.devtool = 'inline-source-map'
+
+  config.plugins.push(
+    new HtmlWebpackPlugin({
+      template: 'demo/index.html'
+    })
+  )
 }
 
 if (process.env.NODE_ENV === 'production') {
@@ -41,20 +46,16 @@ if (process.env.NODE_ENV === 'production') {
   config.externals = {
     'react': 'React',
     'react-dom': 'ReactDOM',
+    'react-spring': 'ReactSpring',
     'prop-types': 'PropTypes',
   }
 
   if (process.env.TARGET === 'minify') {
-    config.plugins.push(
-      new webpack.optimize.UglifyJsPlugin({
-        compress: {
-          warnings: false
-        },
-        mangle: {
-          except: ['React', 'ReactDOM', 'ReactSkroll', 'PropTypes', 'createResizeDetector']
-        }
-      })
-    )
+    config.optimization = {
+      minimizer: [
+        new UglifyJsPlugin()
+      ]
+    }
   }
 }
 
