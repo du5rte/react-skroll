@@ -1,7 +1,8 @@
-import React, { Component } from 'react'
+import React, { Component, PureComponent } from 'react'
 import { Animated } from 'react-native'
 import PropTypes from 'prop-types'
 
+import isFunction from 'lodash/isFunction'
 import { throttle, debounce } from 'throttle-debounce'
 import ResizeObserver from 'resize-observer-polyfill'
 
@@ -371,10 +372,12 @@ export default class Scroller extends Component {
       ScrollerNavigation
     } = this.props
 
+    const scroll = this.connection
+
     return (
       <ScrollerContainer>
         <ScrollerNavigation
-          scroll={this.connection}
+          scroll={scroll}
         />
         <ScrollerContent
           scrollRef={this.createRef}
@@ -385,7 +388,7 @@ export default class Scroller extends Component {
           onTouchMove={this.handleTouchMove}
           onTouchEnd={this.handleTouchEnd}
         >
-          {children}
+          {isFunction(children) ? children(scroll) : children}
         </ScrollerContent>
       </ScrollerContainer>
     )
@@ -403,15 +406,7 @@ class ScrollerContainer extends Component {
   }
 }
 
-class ScrollerContent extends Component {
-  shouldComponentUpdate(nextProps, nextState) {
-    if (Object.keys(nextProps).includes('scroll')) {
-      return false
-    }
-
-    return true
-  }
-
+class ScrollerContent extends PureComponent {
   render() {
     const {
       scroll,
