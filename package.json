@@ -1,7 +1,7 @@
 {
   "name": "react-skroll",
   "description": "Reactive Scrolling",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "main": "lib/index.js",
   "scripts": {
     "clean": "rm -rf dist lib && mkdir dist lib",
@@ -56,8 +56,9 @@
     "@babel/plugin-proposal-export-default-from": "^7.2.0",
     "@babel/preset-env": "^7.2.0",
     "@babel/preset-react": "^7.0.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.6.0",
     "babel-loader": "^8.0.4",
-    "babel-plugin-add-module-exports": "^1.0.0",
     "html-webpack-plugin": "^3.2.0",
     "jest": "^23.6.0",
     "prop-types": "^15.6.2",
