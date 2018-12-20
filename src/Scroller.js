@@ -5,34 +5,9 @@ import PropTypes from 'prop-types'
 import { throttle, debounce } from 'throttle-debounce'
 import ResizeObserver from 'resize-observer-polyfill'
 
+import scrollInitalState from './scrollInitalState'
 import nodeToScrollState from './nodeToScrollState'
 import nodeChildrenToScrollState from './nodeChildrenToScrollState'
-
-const scrollInitalState = {
-  position: 0,
-  positionRatio: 0,
-  start: 0,
-  end: 0,
-  viewHeight: 0,
-  scrollHeight: 0,
-  ready: false,
-  onStart: true,
-  onMiddle: false,
-  onEnd: false,
-  children: [],
-  // autoFrame: props.autoFrame,
-  // autoScroll: props.autoScroll,
-  originalPosition: null,
-  changedPosition: null,
-  timeStamp: null,
-  scrolling: false,
-  wheeling: false,
-  touching: false,
-  moving: false,
-  resting: true,
-  touches: [],
-  deltaY: 0,
-}
 
 export default class Scroller extends Component {
   static defaultProps = {
