@@ -102,10 +102,7 @@ class Demo extends Component {
   constructor() {
     super()
 
-    this.state = {
-      // recommend to use for first render
-      scroll: scrollInitalState
-    }
+    this.scroll = null
   }
 
   render() {
@@ -113,7 +110,7 @@ class Demo extends Component {
       <View>
         <Button
           title="Go to bottom"
-          onPress={() => scroll.scrollToBottom()}
+          onPress={() => this.scroll.scrollToBottom()}
         />
 
         <Scroller
@@ -129,7 +126,7 @@ class Demo extends Component {
 
         <Button
           title="Return to top"
-          onPress={() => scroll.scrollToTop()}
+          onPress={() => this.scroll.scrollToTop()}
         />
       </View>
     )
