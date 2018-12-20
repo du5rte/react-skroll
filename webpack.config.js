@@ -18,10 +18,7 @@ var config = {
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
-    alias: {
-      'react-native$': 'react-native-web'
-    }
+    extensions: ['.js', '.jsx']
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -41,6 +38,7 @@ if (process.env.NODE_ENV === 'production') {
   config.externals = {
     'react': 'React',
     'react-dom': 'ReactDOM',
+    'react-spring': 'ReactSpring',
     'prop-types': 'PropTypes',
   }
 
@@ -51,7 +49,7 @@ if (process.env.NODE_ENV === 'production') {
           warnings: false
         },
         mangle: {
-          except: ['React', 'ReactDOM', 'ReactSkroll', 'PropTypes', 'createResizeDetector']
+          except: ['React', 'ReactDOM', 'ReactSpring', 'ReactSkroll', 'PropTypes', 'createResizeDetector']
         }
       })
     )

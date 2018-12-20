@@ -1,5 +1,5 @@
 import React, { Component, PureComponent } from 'react'
-import { Animated } from 'react-native'
+import { Controller, config, Globals, animated } from 'react-spring'
 import PropTypes from 'prop-types'
 
 import isFunction from 'lodash/isFunction'
@@ -9,6 +9,8 @@ import ResizeObserver from 'resize-observer-polyfill'
 import scrollInitalState from './scrollInitalState'
 import nodeToScrollState from './nodeToScrollState'
 import nodeChildrenToScrollState from './nodeChildrenToScrollState'
+
+const View = Globals.defaultElement
 
 export default class Scroller extends Component {
   static defaultProps = {
@@ -36,12 +38,7 @@ export default class Scroller extends Component {
     this.scrollToPrevDebounced = debounce(250, true, this.scrollToPrev)
     this.scrollToNextDebounced = debounce(250, true, this.scrollToNext)
 
-    this.scrollValue = new Animated.Value(0)
-
-    this.scrollValue.addListener(({ value }) => {
-      // TODO: use setNative
-      this.node.scrollTop = Math.round(value)
-    })
+    this.controller = new Controller({ scroll: 0 })
   }
 
   componentWillUnmount() {
@@ -49,7 +46,7 @@ export default class Scroller extends Component {
   }
 
   createRef = (ref) => {
-    this.node = ref
+    this.target = ref
 
     // add component to resize observer to detect changes on resize
     this.resizeObserver = new ResizeObserver((entries, observer) => {
@@ -62,14 +59,14 @@ export default class Scroller extends Component {
       }
     })
 
-    this.resizeObserver.observe(this.node)
+    this.resizeObserver.observe(this.target)
 
     this.props.scrollRef(this.connection)
   }
 
   deleteRef = () => {
-    if (this.node) {
-      this.resizeObserver.disconnect(this.node)
+    if (this.target) {
+      this.resizeObserver.disconnect(this.target)
     }
 
     this.setStateScroll({
@@ -80,6 +77,7 @@ export default class Scroller extends Component {
   get connection() {
     return {
       ...this.state.scroll,
+      target: this.target,
       autoFrame: this.props.autoFrame,
       autoScroll: this.props.autoScroll,
       scrollToPosition: this.scrollToPosition,
@@ -98,8 +96,8 @@ export default class Scroller extends Component {
 
     const newScroll = {
       ...this.state.scroll,
-      ...nodeToScrollState(this.node),
-      ...nodeChildrenToScrollState(this.node),
+      ...nodeToScrollState(this.target),
+      ...nodeChildrenToScrollState(this.target),
       ...additionalStates
     }
 
@@ -158,11 +156,12 @@ export default class Scroller extends Component {
   }
 
   scrollToPosition = (position) => {
-    Animated.spring(this.scrollValue, {
-      toValue: position,
-      stiffness: 170,
-      damping: 26,
-    }).start()
+    this.controller.update({
+      scroll: position,
+      onFrame: ({ scroll }) => (this.target.scrollTop = scroll),
+    })
+
+    console.log(this.target);
   }
 
   scrollToByIndex = (index) => {
@@ -394,14 +393,14 @@ export default class Scroller extends Component {
   }
 }
 
-class ScrollerContainer extends Component {
-  render() {
-    const style = {
-      height: '100%',
-      width: '100%',
-    }
+const containerStyle = {
+  height: '100%',
+  width: '100%',
+}
 
-    return <div style={style} {...this.props} />
+class ScrollerContainer extends PureComponent {
+  render() {
+    return <View style={containerStyle} {...this.props} />
   }
 }
 
@@ -426,7 +425,7 @@ class ScrollerContent extends PureComponent {
     }
 
     return (
-      <div
+      <View
         ref={scrollRef}
         style={style}
         {...props}

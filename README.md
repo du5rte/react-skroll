@@ -1,5 +1,5 @@
 # react-skroll
-Uses `react-motion` for butter smooth enhanced scrolling experience
+Uses `react-spring` for butter smooth enhanced scrolling experience
 
 [![Build Status](https://travis-ci.org/du5rte/react-skroll.svg?branch=master)](https://travis-ci.org/du5rte/react-skroll)
 [![David](https://img.shields.io/david/peer/du5rte/react-skroll.svg)](https://github.com/du5rte/react-skroll)
