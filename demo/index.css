@@ -82,6 +82,12 @@ section {
           justify-content: center;
 }
 
+.wrapper {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+}
+
 a, button {
   font-size: 1em;
   color: rgba(0, 0, 0, 0.25);
@@ -91,6 +97,7 @@ a, button {
   border-radius: 9999px;
   outline: none;
   border: none;
+  cursor: pointer;
 }
 
 a.active, button.active {

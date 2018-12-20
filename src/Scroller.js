@@ -162,7 +162,6 @@ export default class Scroller extends Component {
       toValue: position,
       stiffness: 170,
       damping: 26,
-      useNativeDriver: true
     }).start()
   }
 

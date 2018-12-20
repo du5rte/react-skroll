@@ -1,74 +1,76 @@
 import React, { Component } from 'react'
 
-import { ScrollProvider, Scroller, ScrollLink } from '../src'
+import { Scroller, scrollInitalState } from '../src'
 
 function round(val) {
-  var precision = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
-
-  return Math.round(val * precision) / precision;
+  return (Math.round(val * 100) / 100).toFixed(2);
 }
 
-export default class Demo extends Component {
-  render() {
-    const style = {
-      wrapper: {
-        position: 'fixed',
-        height: '100%',
-        width: '100%'
-      }
-    }
+const colors = [
+  {name: "Blue", color: "#215cf4" },
+  {name: "Cyan", color: "#0ccabf" },
+  {name: "Green", color: "#4ac36c" },
+  {name: "Yellow", color: "#e0be18" },
+  {name: "Red", color: "#e91e4f" },
+  {name: "Magenta", color: "#ca28e4" },
+]
 
-    const colors = [
-      {name: "Blue", color: "#215cf4" },
-      {name: "Cyan", color: "#0ccabf" },
-      {name: "Green", color: "#4ac36c" },
-      {name: "Yellow", color: "#e0be18" },
-      {name: "Red", color: "#e91e4f" },
-      {name: "Magenta", color: "#ca28e4" },
-    ]
+export default class Demo extends Component {
+  constructor() {
+    super()
+
+    this.state = {
+      scroll: scrollInitalState
+    }
+  }
+
+  render() {
+    const { scroll } = this.state
 
     return (
-      <div style={style.wrapper}>
+      <div className="wrapper">
         <nav>
-          <ScrollLink
-            className={this.props.scroll.onStart ? 'active' : 'inactive'}
-            to={this.props.scroll.start}
+          <a
+            className={scroll.onStart ? 'active' : 'inactive'}
+            onClick={() => this.scroll.scrollToPosition(scroll.start)}
             children="start"
           />
-          <ScrollLink
-            className={this.props.scroll.onMiddle ? 'active' : 'inactive'}
-            to={Math.floor(Math.random() * this.props.scroll.end) + 1}
-            children="middle"
-          />
-          <ScrollLink
-            className={this.props.scroll.onEnd ? 'active' : 'inactive'}
-            to={this.props.scroll.end}
-            children="end"
-          />
           {
-            this.props.scroll.children.map((child, index) =>
-              <ScrollLink
-                key={index}
+            scroll.children.map((child, i) =>
+              <a
+                key={i}
                 className={child.active ? 'active' : 'inactive'}
-                to={child.start}
+                onClick={() => this.scroll.scrollToPosition(child.start)}
                >
-                {child.name}: {round(child.positionRatio)}
-              </ScrollLink>
+                {colors[i].name}
+              </a>
             )
           }
+          <a
+            className={scroll.onEnd ? 'active' : 'inactive'}
+            onClick={() => this.scroll.scrollToPosition(scroll.end)}
+            children="end"
+          />
         </nav>
-        <Scroller>
+
+        <Scroller
+          scrollRef={ref => this.scroll = ref}
+          onScrollChange={(scroll) => this.setState({ scroll })}
+        >
           {
             colors.map(({ name, color }, index) =>
               <section key={index} name={name} style={{background: color}}>
-                <h1>{round(this.props.scroll.positionRatio)}</h1>
+                <h1>{round(scroll.positionRatio)}</h1>
                 <ul>
                   {
-                    Object.entries(this.props.scroll)
+                    Object.entries(scroll)
                       .filter(([key, value]) => typeof value !== 'function')
                       .filter(([key, value]) => typeof value !== 'object')
                       .map(([key, value]) =>
-                      <li key={key}><span className="key">{key}:</span> <span key={key} className={value ? 'active' : 'inactive'}>{value.toString()}</span></li>
+                        <li key={key}>
+                          <span className="key">{key}: </span>
+                          <span key={key} className={value ? 'active' : 'inactive'}>{value.toString()}</span>
+                        </li>
                     )
                   }
                   <li>...</li>
@@ -81,8 +83,3 @@ export default class Demo extends Component {
     )
   }
 }
-
-/*
-
-
-*/
