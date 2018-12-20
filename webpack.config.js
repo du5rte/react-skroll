@@ -1,5 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
+var UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 var env = process.env.NODE_ENV
@@ -50,16 +51,11 @@ if (process.env.NODE_ENV === 'production') {
   }
 
   if (process.env.TARGET === 'minify') {
-    config.plugins.push(
-      new webpack.optimize.UglifyJsPlugin({
-        compress: {
-          warnings: false
-        },
-        mangle: {
-          except: ['React', 'ReactDOM', 'ReactSpring', 'ReactSkroll', 'PropTypes', 'createResizeDetector']
-        }
-      })
-    )
+    config.optimization = {
+      minimizer: [
+        new UglifyJsPlugin()
+      ]
+    }
   }
 }
 
