@@ -11,7 +11,7 @@
     "build:umd:min": "NODE_ENV=production TARGET=minify webpack src/index.js -o dist/react-skroll.min.js",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
     "build:dev": "npm run build:lib -- --watch & npm run test -- --watch",
-    "dev": "webpack-dev-server demo/index.jsx --content-base demo/",
+    "dev": "webpack-dev-server demo/index.js --content-base demo/",
     "prepublish": "npm run clean && npm run build",
     "test": "jest"
   },
@@ -58,6 +58,7 @@
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.4",
     "babel-plugin-add-module-exports": "^1.0.0",
+    "html-webpack-plugin": "^3.2.0",
     "jest": "^23.6.0",
     "lodash": "^4.17.11",
     "prop-types": "^15.6.2",

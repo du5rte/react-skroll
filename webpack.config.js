@@ -1,5 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
+var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 var env = process.env.NODE_ENV
 
@@ -11,14 +12,14 @@ var config = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(js)$/,
         exclude: /node_modules/,
         use: { loader: 'babel-loader' }
       },
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js']
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -30,6 +31,12 @@ var config = {
 if (process.env.NODE_ENV !== 'production') {
   config.mode = 'development'
   config.devtool = 'inline-source-map'
+
+  config.plugins.push(
+    new HtmlWebpackPlugin({
+      template: 'demo/index.html'
+    })
+  )
 }
 
 if (process.env.NODE_ENV === 'production') {
