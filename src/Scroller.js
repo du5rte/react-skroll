@@ -7,7 +7,6 @@ import ResizeObserver from 'resize-observer-polyfill'
 
 import nodeToScrollState from './nodeToScrollState'
 import nodeChildrenToScrollState from './nodeChildrenToScrollState'
-import contextProviderShape from './contextProviderShape'
 
 const scrollInitalState = {
   position: 0,
