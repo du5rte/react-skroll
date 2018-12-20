@@ -23,7 +23,10 @@ ReactSkroll
 [Live Demo](http://codepen.io/du5rte/pen/KrGjEm)
 
 
-## Example Usage
+## Usage
+
+### Functional Children Pattern
+Most useful for simple scenarios when you only need the `scroll` inside the `Scroller` scope.
 
 ```javascript
 import { Scroller } from 'react-skroll'
@@ -34,22 +37,107 @@ const Demo = () => (
     autoScroll={true}
     autoFrame={true}
   >
-    <View>
-      <Button
-        title="1"
-        onPress={() => this.scroll.scrollToNext()}
-      />
-    </View>
-    <View>
-      <Button
-        title="2"
-        onPress={() => this.scroll.scrollToNext()}
-      />
-    </View>
+    {scroll =>
+      <View>
+        <Button
+          title="1"
+          onPress={() => scroll.scrollToNext()}
+        />
+      </View>
+      <View>
+        <Button
+          title="2"
+          onPress={() => scroll.scrollToNext()}
+        />
+      </View>
+    }
   </Scroller>
 )
 ```
 
+### Callback Pattern
+Most useful for when you only need to read the `scroll` information
+
+```javascript
+import { Scroller, scrollInitalState } from 'react-skroll'
+
+class Demo extends Component {
+  constructor() {
+    super()
+
+    this.state = {
+      // recommend to use for first render
+      scroll: scrollInitalState
+    }
+  }
+
+  render() {
+    return (
+      <View>
+        <Text>{this.State.scroll.position}</Text>
+
+        <Scroller
+          onScrollChange={scroll => this.setState({ scroll })}
+        >
+          <View>
+            ...
+          </View>
+          <View>
+            ...
+          </View>
+        </Scroller>
+      </View>
+    )
+  }
+}
+```
+
+### Reference Pattern
+Most useful for when you need `scroll` outside the `Scroller` scope, for example in a navigation bar.
+
+```javascript
+import { Scroller } from 'react-skroll'
+
+class Demo extends Component {
+  constructor() {
+    super()
+
+    this.state = {
+      // recommend to use for first render
+      scroll: scrollInitalState
+    }
+  }
+
+  render() {
+    return (
+      <View>
+        <Button
+          title="Go to bottom"
+          onPress={() => scroll.scrollToBottom()}
+        />
+
+        <Scroller
+          scrollRef={ref => this.scroll = ref}
+        >
+          <View>
+            ...
+          </View>
+          <View>
+            ...
+          </View>
+        </Scroller>
+
+        <Button
+          title="Return to top"
+          onPress={() => scroll.scrollToTop()}
+        />
+      </View>
+    )
+  }
+}
+```
+
+## Props
 
 ### default
 Default scrolling with scrollTo and scroll stats features
