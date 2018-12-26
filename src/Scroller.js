@@ -421,7 +421,7 @@ class ScrollerContent extends PureComponent {
     const style = {
       height: '100%',
       width: '100%',
-      overflowY: 'hidden',
+      overflowY: autoScroll ? 'hidden' : 'auto',
       // overflowY: autoScroll || scroll.touching ? 'hidden' : 'auto',
       // TODO: investigar glich on touchScroll with overFlow
       // overflowScrolling: 'touch',
