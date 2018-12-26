@@ -160,8 +160,6 @@ export default class Scroller extends Component {
       scroll: position,
       onFrame: ({ scroll }) => (this.target.scrollTop = scroll),
     })
-
-    console.log(this.target);
   }
 
   scrollToByIndex = (index) => {
@@ -334,12 +332,18 @@ export default class Scroller extends Component {
   }
 
   handleTouchMove = (e) => {
+    const { autoScroll } = this.props
+
+    if (autoScroll) {
+      e.preventDefault()
+    }
+
     const { touches, originalPosition } = this.state.scroll
 
     let distanceFromTouchStart = e.changedTouches[0].clientY - touches[0].clientY
     let touchPosition = originalPosition - distanceFromTouchStart
 
-    this.scrollToPosition(touchPosition)
+    // this.scrollToPosition(touchPosition)
   }
 
   handleTouchEnd = (e) => {
@@ -347,7 +351,7 @@ export default class Scroller extends Component {
 
     const timeLapse = Date.now() - timeStamp
 
-    if (timeLapse < 200) {
+    if (timeLapse < 400) {
       const movingUpwards = e.changedTouches[0].clientY < touches[0].clientY
       const movingDownwards = e.changedTouches[0].clientY > touches[0].clientY
 
@@ -417,7 +421,8 @@ class ScrollerContent extends PureComponent {
     const style = {
       height: '100%',
       width: '100%',
-      overflowY: autoScroll || scroll.touching ? 'hidden' : 'auto',
+      overflowY: 'hidden',
+      // overflowY: autoScroll || scroll.touching ? 'hidden' : 'auto',
       // TODO: investigar glich on touchScroll with overFlow
       // overflowScrolling: 'touch',
       // WebkitOverflowScrolling: 'touch',
