@@ -34,14 +34,14 @@ export default class Scroller extends Component {
     // debounce is used to mimiques start, move and end events that don't have this functions
     this.handleScrollStart = debounce(500, true, this.handleScrollStart)
     this.handleResizeMove = throttle(50, this.handleResizeMove)
-    this.handleScrollEnd = debounce(500, this.handleScrollEnd)
+    this.handleScrollEnd = debounce(50, this.handleScrollEnd)
     this.handleWheelStart = debounce(100, true, this.handleWheelStart)
     this.handleWheelEnd = debounce(100, this.handleWheelEnd)
     this.handleResizeStart = debounce(250, true, this.handleResizeStart)
     this.handleResizeEnd = debounce(250, this.handleResizeEnd)
 
-    this.scrollToPrevDebounced = debounce(250, true, this.scrollToPrev)
-    this.scrollToNextDebounced = debounce(250, true, this.scrollToNext)
+    this.scrollToPrevThrottled = throttle(700, true, this.scrollToPrev)
+    this.scrollToNextThrottled = throttle(700, true, this.scrollToNext)
 
     this.controller = new Controller({ scroll: 0 })
   }
@@ -296,15 +296,15 @@ export default class Scroller extends Component {
       const movingUpwards = e.deltaY > 0
       const movingDownwards = e.deltaY < 0
 
-      if (movingDownwards) this.scrollToPrevDebounced()
-      if (movingUpwards) this.scrollToNextDebounced()
+      if (movingDownwards) this.scrollToPrevThrottled()
+      if (movingUpwards) this.scrollToNextThrottled()
     }
   }
 
   handleWheelMove = (e) => {
     const { autoScroll, autoFrame } = this.props
     const { scroll } = this.state
-    const { viewHeight, scrollHeight, resting } = scroll
+    const { viewHeight, scrollHeight } = scroll
 
     if (autoScroll) {
       const prev = this.state.deltaY
@@ -316,15 +316,11 @@ export default class Scroller extends Component {
         const movingUpwards = next > 0
         const movingDownwards = next < 0
 
-        if (!resting) {
-          return
-        }
-
         if (movingDownwards) {
-          this.scrollToPrevDebounced()
+          this.scrollToPrevThrottled()
         }
         if (movingUpwards) {
-          this.scrollToNextDebounced()
+          this.scrollToNextThrottled()
         }
       }
     } else {
@@ -379,10 +375,10 @@ export default class Scroller extends Component {
       const movingDownwards = e.changedTouches[0].clientY > touches[0].clientY
 
       if (movingDownwards) {
-        this.scrollToPrevDebounced()
+        this.scrollToPrevThrottled()
       }
       if (movingUpwards) {
-        this.scrollToNextDebounced()
+        this.scrollToNextThrottled()
       }
     } else {
       this.scrollToActive()
