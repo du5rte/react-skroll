@@ -10,6 +10,9 @@ import scrollInitalState from './scrollInitalState'
 import nodeToScrollState from './nodeToScrollState'
 import nodeChildrenToScrollState from './nodeChildrenToScrollState'
 
+const START_TRANSLATE_3D = 'translate3d(0px,0px,0px)'
+const START_TRANSLATE = 'translate(0px,0px)'
+
 const View = Globals.defaultElement
 
 export default class Scroller extends Component {
@@ -50,7 +53,7 @@ export default class Scroller extends Component {
 
     // add component to resize observer to detect changes on resize
     this.resizeObserver = new ResizeObserver((entries, observer) => {
-      if (this.state.ready) {
+      if (this.state.scroll.ready) {
         this.handleResize()
       } else {
         this.setStateScroll({
@@ -145,8 +148,10 @@ export default class Scroller extends Component {
 
   findChildOnView = () => {
     const { children } = this.state.scroll
+    // return child on view, or the last one (when resizing ends up outside of the target)
+    const onView = children.find((child) => child.onView) || children[children.length - 1]
 
-    return children.find((child) => child.onView)
+    return onView
   }
 
   findChildIndexOnView = () => {
@@ -157,8 +162,17 @@ export default class Scroller extends Component {
 
   scrollToPosition = (position) => {
     this.controller.update({
-      scroll: position,
-      onFrame: ({ scroll }) => (this.target.scrollTop = scroll),
+      scroll: -position,
+      config: config.default,
+      onFrame: ({ scroll }) => {
+        this.setState((prevState) => ({
+          scroll: {
+            ...prevState.scroll,
+            position: Math.abs(scroll),
+          }
+        }), this.handleScroll())
+        return this.target.style.transform = `translate3d(0, ${scroll}px, 0)`
+      },
     })
   }
 
@@ -333,17 +347,18 @@ export default class Scroller extends Component {
 
   handleTouchMove = (e) => {
     const { autoScroll } = this.props
+    const { touches, originalPosition, moving } = this.state.scroll
 
-    if (autoScroll) {
+    if (!autoScroll) {
       e.preventDefault()
     }
-
-    const { touches, originalPosition } = this.state.scroll
 
     let distanceFromTouchStart = e.changedTouches[0].clientY - touches[0].clientY
     let touchPosition = originalPosition - distanceFromTouchStart
 
-    // this.scrollToPosition(touchPosition)
+    if (!autoScroll) {
+      this.scrollToPosition(touchPosition)
+    }
   }
 
   handleTouchEnd = (e) => {
@@ -355,8 +370,12 @@ export default class Scroller extends Component {
       const movingUpwards = e.changedTouches[0].clientY < touches[0].clientY
       const movingDownwards = e.changedTouches[0].clientY > touches[0].clientY
 
-      if (movingDownwards) this.scrollToPrev()
-      if (movingUpwards) this.scrollToNext()
+      if (movingDownwards) {
+        this.scrollToPrevDebounced()
+      }
+      if (movingUpwards) {
+        this.scrollToNextDebounced()
+      }
     } else {
       this.scrollToActive()
     }
@@ -382,6 +401,7 @@ export default class Scroller extends Component {
           scroll={scroll}
         />
         <ScrollerContent
+          autoScroll={autoScroll}
           scrollRef={this.createRef}
           scroll={this.state.scroll}
           onScroll={this.handleScroll}
@@ -400,6 +420,8 @@ export default class Scroller extends Component {
 const containerStyle = {
   height: '100%',
   width: '100%',
+  overFlow: 'hidden',
+  transform: START_TRANSLATE_3D,
 }
 
 class ScrollerContainer extends PureComponent {
@@ -419,14 +441,9 @@ class ScrollerContent extends PureComponent {
     } = this.props;
 
     const style = {
-      height: '100%',
       width: '100%',
-      overflowY: autoScroll ? 'hidden' : 'auto',
-      // overflowY: autoScroll || scroll.touching ? 'hidden' : 'auto',
-      // TODO: investigar glich on touchScroll with overFlow
-      // overflowScrolling: 'touch',
-      // WebkitOverflowScrolling: 'touch',
-      // overflowY: !autoScroll && !touching ? 'auto' : 'hidden',
+      touchAction: autoScroll ? 'none' : 'inherit',
+      transform: START_TRANSLATE_3D,
     }
 
     return (

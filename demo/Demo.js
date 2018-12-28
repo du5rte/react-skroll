@@ -61,9 +61,9 @@ export default class Demo extends Component {
         >
           {
             colors.map(({ name, color }, index) =>
-              <section key={index} name={name} style={{background: color}}>
+              <section key={index} name={name} style={{background: color, height: '100vh', width: '100vw'}}>
                 <div className="flex center-center half-width">
-                  <h1>{round(scroll.positionRatio)}</h1>
+                  <h1>{round(this.state.scroll.positionRatio)}</h1>
                 </div>
 
                 <div className="flex left-center half-width">
@@ -71,7 +71,7 @@ export default class Demo extends Component {
                     <p>{'{'}</p>
 
                     {
-                      Object.entries(scroll)
+                      Object.entries(this.state.scroll)
                         .filter(([key, value]) => typeof value !== 'function')
                         .filter(([key, value]) => typeof value !== 'object')
                         .map(([key, value]) =>
