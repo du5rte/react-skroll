@@ -3,22 +3,15 @@ This is a fork of [react-skroll](https://github.com/du5rte/react-skroll/).
 # react-skroll
 Uses `react-spring` for butter smooth enhanced scrolling experience
 
-[![Build Status](https://travis-ci.org/du5rte/react-skroll.svg?branch=master)](https://travis-ci.org/du5rte/react-skroll)
-[![David](https://img.shields.io/david/peer/du5rte/react-skroll.svg)](https://github.com/du5rte/react-skroll)
+[![Build Status](https://travis-ci.org/arturmiglio/react-skroll.svg?branch=master)](https://travis-ci.org/arturmiglio/react-skroll)
+[![David](https://img.shields.io/david/peer/du5rte/react-skroll.svg)](https://github.com/arturmiglio/react-skroll)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](CONTRIBUTING.md#pull-requests)
 [![PRs Welcome](https://img.shields.io/badge/stability-experimental-red.svg)](CONTRIBUTING.md#pull-requests)
 
 ## Install
 ```
-npm install react-skroll --save
+npm install @arturmiglio/react-skroll --save
 ```
-
-## UMD
-```
-<script src="https://unpkg.com/react-sprin/web.umd.js"></script>
-<script src="https://unpkg.com/react-skroll/dist/react-skroll.js"></script>
-```
-(Module exposed as `ReactSkroll`)
 
 ## Demo
 [Codepen Demo](http://codepen.io/du5rte/pen/KrGjEm)
@@ -194,10 +187,10 @@ Types:
 
 ## More on props
 Check out source code:
-- [Scroller.js](https://github.com/du5rte/react-skroll/blob/master/src/Scroller.js)
-- [contextProviderShape.js](https://github.com/du5rte/react-skroll/blob/master/src/contextProviderShape.js)
-- [nodeToScrollState.js](https://github.com/du5rte/react-skroll/blob/master/src/nodeToScrollState.js#L18)
-- [nodeChildrenToScrollState.js](https://github.com/du5rte/react-skroll/blob/master/src/nodeChildrenToScrollState.js#L37)
+- [Scroller.js](https://github.com/arturmiglio/react-skroll/blob/master/src/Scroller.js)
+- [contextProviderShape.js](https://github.com/arturmiglio/react-skroll/blob/master/src/contextProviderShape.js)
+- [nodeToScrollState.js](https://github.com/arturmiglio/react-skroll/blob/master/src/nodeToScrollState.js#L18)
+- [nodeChildrenToScrollState.js](https://github.com/arturmiglio/react-skroll/blob/master/src/nodeChildrenToScrollState.js#L37)
 
 ## TODO
 - [ ] Document
