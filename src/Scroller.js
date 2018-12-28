@@ -29,6 +29,8 @@ export default class Scroller extends Component {
       scroll: scrollInitalState
     }
 
+    this.targetY = 0
+
     // debounce is used to mimiques start, move and end events that don't have this functions
     this.handleScrollStart = debounce(500, true, this.handleScrollStart)
     this.handleResizeMove = throttle(50, this.handleResizeMove)
@@ -230,6 +232,7 @@ export default class Scroller extends Component {
     let newPosition = this.findChildOnView().start
 
     this.scrollToPosition(newPosition)
+    this.targetY = newPosition
   }
 
   handleScroll = () => {
@@ -275,10 +278,6 @@ export default class Scroller extends Component {
   handleWheel = (e) => {
     const { autoScroll } = this.props
 
-    if (autoScroll) {
-      e.preventDefault()
-    }
-
     this.handleWheelStart(e)
     this.handleWheelMove(e)
     this.handleWheelEnd(e)
@@ -303,7 +302,9 @@ export default class Scroller extends Component {
   }
 
   handleWheelMove = (e) => {
-    const { autoScroll } = this.props
+    const { autoScroll, autoFrame } = this.props
+    const { scroll } = this.state
+    const { viewHeight, scrollHeight, resting } = scroll
 
     if (autoScroll) {
       const prev = this.state.deltaY
@@ -315,6 +316,10 @@ export default class Scroller extends Component {
         const movingUpwards = next > 0
         const movingDownwards = next < 0
 
+        if (!resting) {
+          return
+        }
+
         if (movingDownwards) {
           this.scrollToPrevDebounced()
         }
@@ -322,20 +327,27 @@ export default class Scroller extends Component {
           this.scrollToNextDebounced()
         }
       }
+    } else {
+      this.targetY += e.deltaY
+      this.targetY = Math.max(0, Math.min(this.targetY, scrollHeight - viewHeight))
+
+      this.scrollToPosition(this.targetY)
     }
 
     this.setState({ deltaY: e.deltaY })
   }
 
   handleWheelEnd = (e) => {
-    const { autoFrame } = this.state.scroll
+    const { autoFrame } = this.props
 
     this.setStateScrollEnd({
       wheeling: false,
       deltaY: null
     })
 
-    if (autoFrame) this.scrollToActive()
+    if (autoFrame) {
+      this.scrollToActive()
+    }
   }
 
   handleTouchStart = (e) => {
@@ -348,10 +360,6 @@ export default class Scroller extends Component {
   handleTouchMove = (e) => {
     const { autoScroll } = this.props
     const { touches, originalPosition, moving } = this.state.scroll
-
-    if (!autoScroll) {
-      e.preventDefault()
-    }
 
     let distanceFromTouchStart = e.changedTouches[0].clientY - touches[0].clientY
     let touchPosition = originalPosition - distanceFromTouchStart
@@ -366,7 +374,7 @@ export default class Scroller extends Component {
 
     const timeLapse = Date.now() - timeStamp
 
-    if (timeLapse < 400) {
+    if (timeLapse < 500) {
       const movingUpwards = e.changedTouches[0].clientY < touches[0].clientY
       const movingDownwards = e.changedTouches[0].clientY > touches[0].clientY
 
