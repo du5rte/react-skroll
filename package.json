@@ -1,7 +1,7 @@
 {
   "name": "@arturmiglio/react-skroll",
   "description": "Reactive Scrolling",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "main": "lib/index.js",
   "scripts": {
     "clean": "rm -rf dist lib && mkdir dist lib",
