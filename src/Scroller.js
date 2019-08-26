@@ -160,8 +160,6 @@ export default class Scroller extends Component {
       scroll: position,
       onFrame: ({ scroll }) => (this.target.scrollTop = scroll),
     })
-
-    console.log(this.target);
   }
 
   scrollToByIndex = (index) => {
