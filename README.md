@@ -8,7 +8,7 @@ Uses `react-spring` for butter smooth enhanced scrolling experience
 
 ## Install
 ```
-npm install @arturmiglio/react-skroll --save
+npm install react-skroll --save
 ```
 
 ## Demo
