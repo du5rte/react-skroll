@@ -1,5 +1,3 @@
-This is a fork of [react-skroll](https://github.com/du5rte/react-skroll/).
-
 # react-skroll
 Uses `react-spring` for butter smooth enhanced scrolling experience
 
