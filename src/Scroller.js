@@ -63,9 +63,11 @@ export default class Scroller extends Component {
         })
       }
     })
-
-    this.resizeObserver.observe(this.target)
-
+    
+    if(this.target){
+      this.resizeObserver.observe(this.target)
+    }
+    
     this.props.scrollRef(this.connection)
   }
 
