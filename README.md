@@ -185,10 +185,10 @@ Types:
 
 ## More on props
 Check out source code:
-- [Scroller.js](https://github.com/arturmiglio/react-skroll/blob/master/src/Scroller.js)
-- [contextProviderShape.js](https://github.com/arturmiglio/react-skroll/blob/master/src/contextProviderShape.js)
-- [nodeToScrollState.js](https://github.com/arturmiglio/react-skroll/blob/master/src/nodeToScrollState.js#L18)
-- [nodeChildrenToScrollState.js](https://github.com/arturmiglio/react-skroll/blob/master/src/nodeChildrenToScrollState.js#L37)
+- [Scroller.js](https://github.com/du5rte/react-skroll/blob/master/src/Scroller.js)
+- [contextProviderShape.js](https://github.com/du5rte/react-skroll/blob/master/src/contextProviderShape.js)
+- [nodeToScrollState.js](https://github.com/du5rte/react-skroll/blob/master/src/nodeToScrollState.js#L18)
+- [nodeChildrenToScrollState.js](https://github.com/du5rte/react-skroll/blob/master/src/nodeChildrenToScrollState.js#L37)
 
 ## TODO
 - [ ] Document
