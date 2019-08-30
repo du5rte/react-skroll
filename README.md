@@ -1,8 +1,8 @@
 # react-skroll
 Uses `react-spring` for butter smooth enhanced scrolling experience
 
-[![Build Status](https://travis-ci.org/du5rte/react-skroll.svg?branch=master)](https://travis-ci.org/arturmiglio/react-skroll)
-[![David](https://img.shields.io/david/peer/du5rte/react-skroll.svg)](https://github.com/arturmiglio/react-skroll)
+[![Build Status](https://travis-ci.org/du5rte/react-skroll.svg?branch=master)](https://travis-ci.org/du5rte/react-skroll)
+[![David](https://img.shields.io/david/peer/du5rte/react-skroll.svg)](https://github.com/du5rte/react-skroll)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](CONTRIBUTING.md#pull-requests)
 [![PRs Welcome](https://img.shields.io/badge/stability-experimental-red.svg)](CONTRIBUTING.md#pull-requests)
 
