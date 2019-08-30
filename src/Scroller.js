@@ -10,6 +10,9 @@ import scrollInitalState from './scrollInitalState'
 import nodeToScrollState from './nodeToScrollState'
 import nodeChildrenToScrollState from './nodeChildrenToScrollState'
 
+const START_TRANSLATE_3D = 'translate3d(0px,0px,0px)'
+const START_TRANSLATE = 'translate(0px,0px)'
+
 const View = Globals.defaultElement
 
 export default class Scroller extends Component {
@@ -26,17 +29,19 @@ export default class Scroller extends Component {
       scroll: scrollInitalState
     }
 
+    this.targetY = 0
+
     // debounce is used to mimiques start, move and end events that don't have this functions
     this.handleScrollStart = debounce(500, true, this.handleScrollStart)
     this.handleResizeMove = throttle(50, this.handleResizeMove)
-    this.handleScrollEnd = debounce(500, this.handleScrollEnd)
+    this.handleScrollEnd = debounce(50, this.handleScrollEnd)
     this.handleWheelStart = debounce(100, true, this.handleWheelStart)
     this.handleWheelEnd = debounce(100, this.handleWheelEnd)
     this.handleResizeStart = debounce(250, true, this.handleResizeStart)
     this.handleResizeEnd = debounce(250, this.handleResizeEnd)
 
-    this.scrollToPrevDebounced = debounce(250, true, this.scrollToPrev)
-    this.scrollToNextDebounced = debounce(250, true, this.scrollToNext)
+    this.scrollToPrevThrottled = throttle(700, true, this.scrollToPrev)
+    this.scrollToNextThrottled = throttle(700, true, this.scrollToNext)
 
     this.controller = new Controller({ scroll: 0 })
   }
@@ -50,7 +55,7 @@ export default class Scroller extends Component {
 
     // add component to resize observer to detect changes on resize
     this.resizeObserver = new ResizeObserver((entries, observer) => {
-      if (this.state.ready) {
+      if (this.state.scroll.ready) {
         this.handleResize()
       } else {
         this.setStateScroll({
@@ -147,8 +152,10 @@ export default class Scroller extends Component {
 
   findChildOnView = () => {
     const { children } = this.state.scroll
+    // return child on view, or the last one (when resizing ends up outside of the target)
+    const onView = children.find((child) => child.onView) || children[children.length - 1]
 
-    return children.find((child) => child.onView)
+    return onView
   }
 
   findChildIndexOnView = () => {
@@ -159,8 +166,17 @@ export default class Scroller extends Component {
 
   scrollToPosition = (position) => {
     this.controller.update({
-      scroll: position,
-      onFrame: ({ scroll }) => (this.target.scrollTop = scroll),
+      scroll: -position,
+      config: config.default,
+      onFrame: ({ scroll }) => {
+        this.setState((prevState) => ({
+          scroll: {
+            ...prevState.scroll,
+            position: Math.abs(scroll),
+          }
+        }), this.handleScroll())
+        return this.target.style.transform = `translate3d(0, ${scroll}px, 0)`
+      },
     })
   }
 
@@ -218,6 +234,7 @@ export default class Scroller extends Component {
     let newPosition = this.findChildOnView().start
 
     this.scrollToPosition(newPosition)
+    this.targetY = newPosition
   }
 
   handleScroll = () => {
@@ -263,10 +280,6 @@ export default class Scroller extends Component {
   handleWheel = (e) => {
     const { autoScroll } = this.props
 
-    if (autoScroll) {
-      e.preventDefault()
-    }
-
     this.handleWheelStart(e)
     this.handleWheelMove(e)
     this.handleWheelEnd(e)
@@ -285,13 +298,15 @@ export default class Scroller extends Component {
       const movingUpwards = e.deltaY > 0
       const movingDownwards = e.deltaY < 0
 
-      if (movingDownwards) this.scrollToPrevDebounced()
-      if (movingUpwards) this.scrollToNextDebounced()
+      if (movingDownwards) this.scrollToPrevThrottled()
+      if (movingUpwards) this.scrollToNextThrottled()
     }
   }
 
   handleWheelMove = (e) => {
-    const { autoScroll } = this.props
+    const { autoScroll, autoFrame } = this.props
+    const { scroll } = this.state
+    const { viewHeight, scrollHeight } = scroll
 
     if (autoScroll) {
       const prev = this.state.deltaY
@@ -304,26 +319,33 @@ export default class Scroller extends Component {
         const movingDownwards = next < 0
 
         if (movingDownwards) {
-          this.scrollToPrevDebounced()
+          this.scrollToPrevThrottled()
         }
         if (movingUpwards) {
-          this.scrollToNextDebounced()
+          this.scrollToNextThrottled()
         }
       }
+    } else {
+      this.targetY += e.deltaY
+      this.targetY = Math.max(0, Math.min(this.targetY, scrollHeight - viewHeight))
+
+      this.scrollToPosition(this.targetY)
     }
 
     this.setState({ deltaY: e.deltaY })
   }
 
   handleWheelEnd = (e) => {
-    const { autoFrame } = this.state.scroll
+    const { autoFrame } = this.props
 
     this.setStateScrollEnd({
       wheeling: false,
       deltaY: null
     })
 
-    if (autoFrame) this.scrollToActive()
+    if (autoFrame) {
+      this.scrollToActive()
+    }
   }
 
   handleTouchStart = (e) => {
@@ -334,12 +356,15 @@ export default class Scroller extends Component {
   }
 
   handleTouchMove = (e) => {
-    const { touches, originalPosition } = this.state.scroll
+    const { autoScroll } = this.props
+    const { touches, originalPosition, moving } = this.state.scroll
 
     let distanceFromTouchStart = e.changedTouches[0].clientY - touches[0].clientY
     let touchPosition = originalPosition - distanceFromTouchStart
 
-    this.scrollToPosition(touchPosition)
+    if (!autoScroll) {
+      this.scrollToPosition(touchPosition)
+    }
   }
 
   handleTouchEnd = (e) => {
@@ -347,12 +372,16 @@ export default class Scroller extends Component {
 
     const timeLapse = Date.now() - timeStamp
 
-    if (timeLapse < 200) {
+    if (timeLapse < 500) {
       const movingUpwards = e.changedTouches[0].clientY < touches[0].clientY
       const movingDownwards = e.changedTouches[0].clientY > touches[0].clientY
 
-      if (movingDownwards) this.scrollToPrev()
-      if (movingUpwards) this.scrollToNext()
+      if (movingDownwards) {
+        this.scrollToPrevThrottled()
+      }
+      if (movingUpwards) {
+        this.scrollToNextThrottled()
+      }
     } else {
       this.scrollToActive()
     }
@@ -378,6 +407,7 @@ export default class Scroller extends Component {
           scroll={scroll}
         />
         <ScrollerContent
+          autoScroll={autoScroll}
           scrollRef={this.createRef}
           scroll={this.state.scroll}
           onScroll={this.handleScroll}
@@ -396,6 +426,8 @@ export default class Scroller extends Component {
 const containerStyle = {
   height: '100%',
   width: '100%',
+  overFlow: 'hidden',
+  transform: START_TRANSLATE_3D,
 }
 
 class ScrollerContainer extends PureComponent {
@@ -415,13 +447,9 @@ class ScrollerContent extends PureComponent {
     } = this.props;
 
     const style = {
-      height: '100%',
       width: '100%',
-      overflowY: autoScroll || scroll.touching ? 'hidden' : 'auto',
-      // TODO: investigar glich on touchScroll with overFlow
-      // overflowScrolling: 'touch',
-      // WebkitOverflowScrolling: 'touch',
-      // overflowY: !autoScroll && !touching ? 'auto' : 'hidden',
+      touchAction: autoScroll ? 'none' : 'inherit',
+      transform: START_TRANSLATE_3D,
     }
 
     return (

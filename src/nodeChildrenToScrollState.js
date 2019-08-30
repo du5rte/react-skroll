@@ -1,4 +1,4 @@
-export default function nodeChildrenToScrollState({ children, scrollTop }) {
+export default function nodeChildrenToScrollState({ children, style }) {
   let list = []
 
   // used to increment children view heights
@@ -7,6 +7,11 @@ export default function nodeChildrenToScrollState({ children, scrollTop }) {
   // Fix: default props
   // let { theshold } = this.props
   let theshold = 0.5
+
+  let translateY = style.getPropertyValue('transform')
+    .split('(')[1]
+    .split(',')[1]
+  let scrollTop = Math.abs(parseInt(translateY))
 
   // TODO: experiment a map
   for (let i = 0; i < children.length; i++) {

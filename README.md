@@ -11,13 +11,6 @@ Uses `react-spring` for butter smooth enhanced scrolling experience
 npm install react-skroll --save
 ```
 
-## UMD
-```
-<script src="https://unpkg.com/react-sprin/web.umd.js"></script>
-<script src="https://unpkg.com/react-skroll/dist/react-skroll.js"></script>
-```
-(Module exposed as `ReactSkroll`)
-
 ## Demo
 [Codepen Demo](http://codepen.io/du5rte/pen/KrGjEm)
 

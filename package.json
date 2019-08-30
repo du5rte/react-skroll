@@ -1,7 +1,7 @@
 {
-  "name": "react-skroll",
+  "name": "@arturmiglio/react-skroll",
   "description": "Reactive Scrolling",
-  "version": "0.7.3",
+  "version": "0.8.0",
   "main": "lib/index.js",
   "scripts": {
     "clean": "rm -rf dist lib && mkdir dist lib",
@@ -16,14 +16,14 @@
     "test": "jest"
   },
   "license": "MIT",
-  "homepage": "https://github.com/du5rte/react-skroll#readme",
+  "homepage": "https://github.com/arturmiglio/react-skroll#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/du5rte/react-skroll.git"
+    "url": "git+https://github.com/arturmiglio/react-skroll.git"
   },
-  "author": "Duarte Monteiro <du5rtemonteiro@gmail.com> (http://du5rte.com)",
+  "author": "Artur Miglio <arturmiglio@gmail.com> (http://arturmiglio.com)",
   "bugs": {
-    "url": "https://github.com/du5rte/react-skroll/issues"
+    "url": "https://github.com/arturmiglio/react-skroll/issues"
   },
   "keywords": [
     "react",
@@ -70,5 +70,8 @@
     "webpack": "^4.28.0",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10"
+  },
+  "directories": {
+    "lib": "lib"
   }
 }

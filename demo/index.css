@@ -41,6 +41,7 @@ nav {
   left: 0;
   width: 100%;
   padding: 0.5em;
+  z-index: 10;
 }
 
 h1 {

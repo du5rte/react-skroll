@@ -2,16 +2,21 @@ export default function nodeToScrollState({
   scrollTop,
   scrollHeight,
   offsetHeight,
-  children
+  children,
+  style
 }) {
   // Interpreting native values
   let start = 0
-  let viewHeight = offsetHeight
+  let viewHeight = offsetHeight / children.length
   let end = scrollHeight - viewHeight
 
+  let translateY = style.getPropertyValue('transform')
+    .split('(')[1]
+    .split(',')[1]
+
   // current position
-  let position = scrollTop
-  let positionRatio = scrollTop / end
+  let position = Math.abs(parseInt(translateY))
+  let positionRatio = position / end
 
   // Conditionals
   let onStart = position <= start
@@ -20,7 +25,7 @@ export default function nodeToScrollState({
 
   // let scrolling = true / false
 
-  let positionRelativeRatio = Math.abs(start - scrollTop / offsetHeight)
+  let positionRelativeRatio = Math.abs(start - position / viewHeight)
 
   return {
     position,
